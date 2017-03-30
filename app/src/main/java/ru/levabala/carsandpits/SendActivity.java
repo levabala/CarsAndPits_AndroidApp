@@ -2,6 +2,7 @@ package ru.levabala.carsandpits;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -143,22 +144,52 @@ public class SendActivity extends AppCompatActivity {
         return ret;
     }
 
+    public void showTracksOnMap(View view){
+        Intent mapIntent = new Intent(this, MapsActivity.class);
+
+        List<String> trackNames = getCheckedTrackNames();
+        List<String> tracksData = new ArrayList<>();
+
+        for (String f : trackNames)
+            tracksData.add(readFromFile(this,f));
+
+        String[] trackNamesArr = new String[trackNames.size()];
+        String[] tracksDataArr = new String[tracksData.size()];
+        tracksData.toArray(tracksDataArr);
+        trackNames.toArray(trackNamesArr);
+
+        Bundle b = new Bundle();
+        b.putStringArray("trackNames", trackNamesArr);
+        //b.putStringArray("tracksData", tracksDataArr);
+        mapIntent.putExtras(b);
+
+        startActivity(mapIntent);
+    }
+
     public void sendData(View view) {
         //SendDataTask senddatatask = new SendDataTask();
         //senddatatask.execute(map);
+        List<String> list = getCheckedTrackNames();
+
+        if (list.size() == 0){
+            logText("Empty message");
+            return;
+        }
+
+        for (String l : list){
+            HttpReq httprequest = new HttpReq();
+            httprequest.execute(readFromFile(this, l),String.valueOf(serverType.isChecked()));
+        }
+    }
+
+    private List<String> getCheckedTrackNames(){
         SparseBooleanArray checked = listViewTracks.getCheckedItemPositions();
         List<String> list = new ArrayList<>();
         for (int i = 0; i < listViewTracks.getAdapter().getCount(); i++) {
             if (checked.get(i))
                 list.add((String)listViewTracks.getItemAtPosition(i));
         }
-
-        if (list.size() == 0){
-            logText("Empty message");
-            return;
-        }
-        HttpReq httprequest = new HttpReq();
-        httprequest.execute(prepareDataToSend(list),String.valueOf(serverType.isChecked()));
+        return list;
     }
 
     private String[] getArrayOfFileNames(){

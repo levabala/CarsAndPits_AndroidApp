@@ -15,10 +15,10 @@
         android:id="@+id/listViewTracks"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/saveButton"
         android:clickable="false"
         android:choiceMode="multipleChoice"
-        android:layout_below="@+id/button2" />
+        android:layout_below="@+id/button2"
+        android:layout_above="@+id/button3" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,5 +63,18 @@
         android:textOff="Global server"
         android:checked="true"
         android:text="Global Server" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show on map"
+        android:id="@+id/button3"
+        android:onClick="showTracksOnMap"
+        android:layout_above="@+id/saveButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="27dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
