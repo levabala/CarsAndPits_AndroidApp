@@ -92,7 +92,7 @@ public class SendActivity extends AppCompatActivity {
                 else urlstr = LOCAL_SERVER_ADDRESS;
                 urlstr += SERVER_REQUEST_PATH;
 
-                url = new URL("http://192.168.3.6:3000/postData");  //Генерю URL
+                url = new URL(urlstr);  //Генерю URL
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection(); //Открываю соединение
 
                 connection.setRequestMethod("POST");
