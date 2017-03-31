@@ -48,6 +48,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -373,6 +374,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         String buffer = readFromFile(this,"buffer.txt");
         writeToFile(buffer,filename,this);
         writeToFile(filename + '|', "listOfTracks.txt",this);
+
+        //clear buffer
+        try {
+            OutputStream outputStream = this.openFileOutput("buffer.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(outputStream);
+            writer.print("");
+            writer.close();
+        }
+        catch (FileNotFoundException e){
+            logText("File not found error");
+        }
 
         logText("All your tracks:\n" + readFromFile(this,"listOfTracks.txt").replaceAll("\\|", "\n"));
     }

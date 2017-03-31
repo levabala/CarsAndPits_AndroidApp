@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -144,6 +146,27 @@ public class SendActivity extends AppCompatActivity {
         return ret;
     }
 
+    public void setLocalServerIp(View view){
+        final EditText input = new EditText(this);
+        input.setText(LOCAL_SERVER_ADDRESS);
+        //input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Changing local server")
+                .setMessage("Input new ip address")
+                .setView(input)
+                .setNegativeButton(android.R.string.cancel, null) // dismisses by default
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        String address = input.getText().toString();
+                        logText("New local server ip:\n" + address);
+                        LOCAL_SERVER_ADDRESS = address;
+                    }
+                })
+                .create()
+                .show();
+    }
+
     public void showTracksOnMap(View view){
         Intent mapIntent = new Intent(this, MapsActivity.class);
 
@@ -154,14 +177,16 @@ public class SendActivity extends AppCompatActivity {
             tracksData.add(readFromFile(this,f));
 
         String[] trackNamesArr = new String[trackNames.size()];
-        String[] tracksDataArr = new String[tracksData.size()];
-        tracksData.toArray(tracksDataArr);
+        //String[] tracksDataArr = new String[tracksData.size()];
+        //tracksData.toArray(tracksDataArr);
         trackNames.toArray(trackNamesArr);
 
         Bundle b = new Bundle();
         b.putStringArray("trackNames", trackNamesArr);
         //b.putStringArray("tracksData", tracksDataArr);
         mapIntent.putExtras(b);
+
+        //logText(trackNamesArr[0] + " size: " + String.valueOf(readFromFile(this,trackNamesArr[0]).length()));
 
         startActivity(mapIntent);
     }
