@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,10 +83,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accelerometer;
     private float deltaX, deltaY, deltaZ, lastX, lastY, lastZ, maxDeltaX, maxDeltaY, maxDeltaZ;
     private TextView tvX, tvY, tvZ, tvHashMapSize, tvZBuffer;
+    private Button buttonStartStop;
 
     private List<Float> deltaXBuffer, deltaYBuffer, deltaZBuffer;
     private Location currentLocation;
     private List<ChunkSnap> chunks;
+    private boolean recording = false;
     int a = 0;
     int b = 20;
     boolean isFirst = true;
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         tvZ = (TextView) findViewById(R.id.textViewZ);
         tvZBuffer = (TextView) findViewById(R.id.textViewZBuffer);
         tvHashMapSize = (TextView) findViewById(R.id.textViewHashMapSize);
+        buttonStartStop = (Button) findViewById(R.id.buttonStartStop);
 
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -319,8 +323,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void saveData(View view){
-        resetTrack();
         saveAllBuffer();
+        resetTrack();
     }
 
     public void ClearAllTracks(View view){
@@ -337,8 +341,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 .show();
     }
 
-    public void resetData(View view){
+    public void startRecording(View view){
+
+    }
+
+    public void stopRecording(View view){
         resetTrack();
+        clearBuffer();
     }
 
     private void resetTrack(){
@@ -375,7 +384,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         writeToFile(buffer,filename,this);
         writeToFile(filename + '|', "listOfTracks.txt",this);
 
-        //clear buffer
+        clearBuffer();
+
+
+        logText("All your tracks:\n" + readFromFile(this,"listOfTracks.txt").replaceAll("\\|", "\n"));
+    }
+
+    private void clearBuffer(){
         try {
             OutputStream outputStream = this.openFileOutput("buffer.txt", MODE_PRIVATE);
             PrintWriter writer = new PrintWriter(outputStream);
@@ -385,8 +400,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         catch (FileNotFoundException e){
             logText("File not found error");
         }
-
-        logText("All your tracks:\n" + readFromFile(this,"listOfTracks.txt").replaceAll("\\|", "\n"));
     }
 
     private String stringifyData(List<ChunkSnap> chunksArray) {
@@ -410,8 +423,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         String accelerations = "";
         if (accelerationData[0] != null && accelerationData[0].length > 0)
             for (int i = 0; i < accelerationData[0].length; i++)
-                for (int ii = 0; ii < accelerationData.length; ii++)
-                    accelerations += accelerationData[ii][i] + ";";//String.format("%f;%f;%f;", accelerationData[i][0],accelerationData[i][1],accelerationData[i][2]);
+                for (int ii = 0; ii < accelerationData.length; ii++) {
+                    String acc = "";
+                    if (accelerationData[ii][i] == 0f) acc = "0";
+                    else acc = String.valueOf(accelerationData[ii][i]);
+                    accelerations += acc + ";";//String.format("%f;%f;%f;", accelerationData[i][0],accelerationData[i][1],accelerationData[i][2]);
+                }
         return String.format("%f;%f;%d;%s|", l.getLatitude(), l.getLongitude(), time, accelerations);
     }
 

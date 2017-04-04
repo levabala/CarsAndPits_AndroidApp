@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.levabala.carsandpits_v2.TrackActivity">
+
+    <TextView
+        android:id="@+id/textViewRealCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="45dp"
+        android:text="Messages count"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRouteLength" />
+
+    <TextView
+        android:id="@+id/textViewGpsAccuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Gps Accuracy"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRouteLength" />
+
+    <TextView
+        android:id="@+id/textViewRouteLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:text="Location not found"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/buttonPauseService"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="pauseService"
+        android:text="Pause service"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSaveRoute"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="saveRoute"
+        android:text="Save route"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonShowListOfRoutes" />
+
+    <Button
+        android:id="@+id/buttonShowListOfRoutes"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="showRoutesFile"
+        android:text="Show routes file"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTryToRead" />
+
+    <Button
+        android:id="@+id/buttonTryToRead"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="readBuffer"
+        android:text="Read buffer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonResumeService" />
+
+    <Button
+        android:id="@+id/buttonResumeService"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="resumeService"
+        android:text="Resume service"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPauseService" />
+
+</android.support.constraint.ConstraintLayout>

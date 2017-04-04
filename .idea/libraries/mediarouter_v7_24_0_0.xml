@@ -4,9 +4,9 @@
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/jars/libs/internal_impl-24.0.0.jar!/" />
-      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/res" />
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/jars/libs/internal_impl-24.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
