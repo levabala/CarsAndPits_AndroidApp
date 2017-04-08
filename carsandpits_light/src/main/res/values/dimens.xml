@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="layout_padding">5dp</dimen>
+    <!--<dimen name="popup_animation_duration">300</dimen>-->
+</resources>

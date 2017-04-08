@@ -1,1 +1,1 @@
-include ':app', ':carsandpits_v2'
+include ':app', ':carsandpits_v2', ':testing', ':carsandpits_light'

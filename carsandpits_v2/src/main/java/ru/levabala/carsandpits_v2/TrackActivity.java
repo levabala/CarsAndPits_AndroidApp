@@ -2,6 +2,8 @@ package ru.levabala.carsandpits_v2;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -17,6 +19,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +42,14 @@ public class TrackActivity extends AppCompatActivity {
 
     private TextView tvRouteLength, tvGpsAccuracy, tvRealRouteLength;
     private int messagesCount = 0;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
 
+        context = this;
         routesManager = new RoutesManager(this);
 
         //let's request some permissions
@@ -101,8 +107,6 @@ public class TrackActivity extends AppCompatActivity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-
-
     public void resumeService(View view){
         serviceController.Resume();
         //sendMessageToService("Resume");
@@ -128,16 +132,20 @@ public class TrackActivity extends AppCompatActivity {
     }
 
     public void saveRoute(View view){
-        if (!FileMethods.isFileEmpty("buffer.dat", 64 / 8)){ //long in bytes
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
-            String formattedDate = df.format(c.getTime());
+        logText("Saving");
 
-            FileMethods.saveBufferToFileAndClear(formattedDate + ".dat", this);
-        }
-        else {
-            //logText("Clear");
-            FileMethods.clearFile("buffer.dat", this);
-        }
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
+        final String formattedDate = df.format(c.getTime());
+
+        final EditText input = new EditText(this);
+        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FileMethods.saveBufferToFileAndClear(input.getText().toString() + ".dat", context);
+                logText("Route saved");
+            }
+        };
+        Utils.requestStringInDialog("Route saving", "File name:", formattedDate, input, onClickListener, TrackActivity.this, context);
     }
 }

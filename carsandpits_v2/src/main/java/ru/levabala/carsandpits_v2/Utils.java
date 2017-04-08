@@ -1,8 +1,11 @@
 package ru.levabala.carsandpits_v2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,24 +18,19 @@ public class Utils {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
-    public static String requestStringInDialog(String title, String message, String defaultString, Context context){
-        final EditText input = new EditText(context);
+    public static void requestStringInDialog(String title, String message, String defaultString, EditText input,
+                                             DialogInterface.OnClickListener onClickListener, Activity activity, Context context){
         input.setText(defaultString);
-        //input.setInputType(InputType.TYPE_CLASS_TEXT);
-
-        new AlertDialog.Builder(context)
+        input.selectAll();
+        AlertDialog alert = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setView(input)
                 .setNegativeButton(android.R.string.cancel, null) // dismisses by default
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        String answer = input.getText().toString();
-
-                    }
-                })
-                .create()
-                .show();
-        return "";
+                .setPositiveButton(android.R.string.ok, onClickListener)
+                .create();
+        alert.show();
+        if(input.requestFocus())
+            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 }
