@@ -47,7 +47,7 @@ public class RouterRecorder {
         context.startService(intent);
     }
 
-    public void stopRecord(Runnable afterStopAction){
+    public void stopRecord(final CallbackInterface callback){
         route = new Route(new ArrayList<>(SensorsService.totalRoute), SensorsService.startTime);
 
         Calendar c = Calendar.getInstance();
@@ -65,6 +65,10 @@ public class RouterRecorder {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (input.getText().toString().equals("buffer.dat") || input.getText().toString().equals("listoftracks.config"))
                     Utils.logText("You mustn't save tracks as \"listoftracks.config\" or \"buffer.dat\"", context);
+                else if (s.toString().indexOf('|') != -1){
+                    input.setText(s.toString().replace("|", ""));
+                    Utils.logText("You mustn't use \"|\" in tracks name because it's system symbol", context);
+                }
             }
 
             @Override
@@ -83,14 +87,15 @@ public class RouterRecorder {
                     return;
                 }
                 FileMethods.saveBufferToFileAndClear(filename, context);
+                FileMethods.appendToFile((filename + "|").getBytes(), "listoftracks.config", context);
+
+                SensorsService.totalRoute.clear();
+                serviceIsRunning = false;
+
                 Utils.logText("Route saved", context);
-
-
+                callback.run();
             }
         };
         Utils.requestStringInDialog("Route saving", "File name:", formattedDate, input, onClickListener, (Activity)context, context);
-
-        SensorsService.totalRoute.clear();
-        serviceIsRunning = false;
     }
 }

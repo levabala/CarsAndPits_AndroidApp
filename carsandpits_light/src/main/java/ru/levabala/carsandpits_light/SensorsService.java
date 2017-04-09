@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SensorsService extends Service implements SensorEventListener {
     public static float gpsAccuracy = 0;
@@ -267,7 +269,7 @@ public class SensorsService extends Service implements SensorEventListener {
     }
 
     private void init(){
-        if (!FileMethods.isFileEmpty("buffer.dat", 64 / 8)){ //long in bytes
+        if (!FileMethods.isFileEmpty("buffer.dat", 64 / 8, context)){ //long in bytes
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
             String formattedDate = df.format(c.getTime());
@@ -280,6 +282,12 @@ public class SensorsService extends Service implements SensorEventListener {
         }
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        /*String str = "";
+        List<Sensor> list = mSensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor s : list)
+            str += s.getStringType() + "\n";
+        Toast.makeText(this,str,Toast.LENGTH_LONG).show();*/
 
         //registering accelerometer
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
@@ -310,8 +318,6 @@ public class SensorsService extends Service implements SensorEventListener {
 
         initializeLocationManager();
         requestLocationUpdating();
-
-        //logText("Created");
     }
 
     private void requestLocationUpdating(){
@@ -319,10 +325,10 @@ public class SensorsService extends Service implements SensorEventListener {
 
         try {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+            //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
         }
         catch (SecurityException e){
-            logText("requestLocationUpdating ERROR");
+            logText("requestLocationUpdating ERROR\n" + e.toString());
         }
 
         //logText("requestLocationUpdating done");

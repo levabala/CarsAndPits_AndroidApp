@@ -43,33 +43,34 @@
             android:text="Send to server" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonShowOnMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/buttonSendToServer"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:onClick="showTracksOnMap"
             android:text="Show on map" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button2"
+            android:layout_above="@+id/buttonShowOnMap"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:text="Join tracks" />
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/switchServerType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/listViewTracks"
             android:checked="true"
             android:splitTrack="false"
-            android:text="Global server"
-            android:layout_below="@+id/listViewTracks"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView" />
+            android:text="Global server" />
 
     </RelativeLayout>
 </LinearLayout>

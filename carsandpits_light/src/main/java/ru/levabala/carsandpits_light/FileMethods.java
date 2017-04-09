@@ -108,12 +108,12 @@ public class FileMethods {
         clearFile("buffer.dat", context);
     }
 
-    public static boolean isFileEmpty(String filename, int bytesMin){
-        int fileLength = (int)new File(filename).length();
+    public static boolean isFileEmpty(String filename, int bytesMin, Context context){
+        int fileLength = (int)fileSize(filename, context);
         return fileLength < bytesMin;
     }
 
-    public static long fileSize(String filename){
-        return new File(filename).length();
+    public static long fileSize(String filename, Context context){
+        return new File(context.getFilesDir().getAbsolutePath() + "/" + filename).length();
     }
 }

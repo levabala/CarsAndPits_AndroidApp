@@ -1,11 +1,15 @@
 package ru.levabala.carsandpits_light;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -99,6 +103,34 @@ public class MainActivity extends AppCompatActivity {
         routerRecorder = new RouterRecorder(context);
 
         UIUpdateTimer = new Timer();
+
+        //let's request some permissions
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
     }
 
     @Override
@@ -191,8 +223,15 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void run(){
                                         tvLocationsCount.setText(String.valueOf(SensorsService.totalRoute.size()));
-                                        tvRouteSize.setText(String.valueOf(FileMethods.fileSize("buffer.dat")));
                                         tvSignalQuality.setText(String.valueOf(SensorsService.gpsAccuracy));
+
+                                        int fileSizeB = (int)FileMethods.fileSize("buffer.dat", context);
+                                        float fileSizeKB = (float)fileSizeB / 1024f;
+                                        float fileSizeMB = (float)fileSizeB / 1024f / 1024f;
+                                        String fileSizeStr = String.format("%.1f", fileSizeKB) + "KB";;
+                                        if (fileSizeMB > 10) fileSizeStr = String.format("%.1f", fileSizeMB) + "MB";
+
+                                        tvRouteSize.setText(fileSizeStr);
                                     }
                                 });
                     }
@@ -203,21 +242,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveTrack(){
-        routerRecorder.stopRecord();
-
-        switchActivityTo(0,context);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white, context.getTheme()));
-        } else {
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white));
-        }
-        fab.setOnClickListener(new View.OnClickListener() {
+        routerRecorder.stopRecord(new CallbackInterface() {
             @Override
-            public void onClick(View view) {
-                showTrackCreatePopup();
+            public void run() {
+                switchActivityTo(0,context);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white, context.getTheme()));
+                else
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white));
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showTrackCreatePopup();
+                    }
+                });
+
+                Utils.logText(FileMethods.readFileToString("listoftracks.config", context), context);
             }
         });
+    }
+
+    public void showTracksOnMap(View view){
+        String listoftracks = FileMethods.readFileToString("listoftracks.config", context);
+        String[] arr = listoftracks.split("\\|");
+        String str = "";
+        for (String s : arr)
+            str += s + '\n';
+        Utils.logText(str, context);
     }
 
     private void updatelistViewOfTracks(){
@@ -228,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         //setListAdapter(adapter);
 
         //String[] arr = getArrayOfFileNames();
-        String[] arr = new String[10];
+        /*String[] arr = new String[10];
         arr[0] = "Track1";
         arr[1] = "Track2";
         arr[2] = "Track3";
@@ -244,6 +296,6 @@ public class MainActivity extends AppCompatActivity {
             str += s;
             if (s.length() != 0)
                 listOfTracks.add(s);//.split("\\+")[0]);
-        }
+        }*/
     }
 }
