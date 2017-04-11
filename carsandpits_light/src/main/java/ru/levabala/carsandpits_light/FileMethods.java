@@ -104,8 +104,8 @@ public class FileMethods {
     }
 
     public static void saveBufferToFileAndClear(String targetFilename, Context context){
-        copyFromTo("buffer.dat", targetFilename, context);
-        clearFile("buffer.dat", context);
+        copyFromTo(MainActivity.BUFFER_FILENAME, targetFilename, context);
+        clearFile(MainActivity.BUFFER_FILENAME, context);
     }
 
     public static boolean isFileEmpty(String filename, int bytesMin, Context context){

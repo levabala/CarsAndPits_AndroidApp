@@ -22,16 +22,18 @@
             tools:layout_editor_absoluteY="16dp" />
 
         <ListView
+            android:id="@+id/listViewTracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listViewTracks"
+            android:layout_above="@+id/button3"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:clickable="false"
-            android:choiceMode="multipleChoice"
-            android:transcriptMode="alwaysScroll"
             android:layout_below="@+id/textView"
-            android:layout_above="@+id/button3" />
+            android:layout_marginTop="5dp"
+            android:choiceMode="multipleChoice"
+            android:clickable="false"
+            android:background="@drawable/card_background"
+            android:transcriptMode="alwaysScroll" />
 
         <Button
             android:id="@+id/buttonSendToServer"
@@ -40,6 +42,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:onClick="sendChosenTracks"
             android:text="Send to server" />
 
         <Button
@@ -71,6 +74,16 @@
             android:checked="true"
             android:splitTrack="false"
             android:text="Global server" />
+
+        <Button
+            android:id="@+id/buttonClearTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteAllTracks"
+            android:text="Clear tracks"
+            android:layout_above="@+id/buttonSendToServer"
+            android:layout_toRightOf="@+id/buttonSendToServer"
+            android:layout_toEndOf="@+id/buttonSendToServer" />
 
     </RelativeLayout>
 </LinearLayout>

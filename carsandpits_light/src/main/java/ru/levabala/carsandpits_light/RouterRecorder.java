@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +64,8 @@ public class RouterRecorder {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (input.getText().toString().equals("buffer.dat") || input.getText().toString().equals("listoftracks.config"))
+                if (input.getText().toString().equals(MainActivity.BUFFER_FILENAME) ||
+                        input.getText().toString().equals(MainActivity.LIST_OF_TRACKS_FILENAME))
                     Utils.logText("You mustn't save tracks as \"listoftracks.config\" or \"buffer.dat\"", context);
                 else if (s.toString().indexOf('|') != -1){
                     input.setText(s.toString().replace("|", ""));
@@ -82,12 +84,12 @@ public class RouterRecorder {
             public void onClick(DialogInterface dialog, int which) {
                 String filename = input.getText().toString() + ".dat";
                 //checking for app-reserved files
-                if (filename.equals("buffer.dat") || filename.equals("listoftracks.config")){
+                if (filename.equals(MainActivity.BUFFER_FILENAME) || filename.equals(MainActivity.LIST_OF_TRACKS_FILENAME)){
                     Utils.logText("Not saved. You can't use the names:\n'buffer.dat'\n'listoftracks.config'", context);
                     return;
                 }
                 FileMethods.saveBufferToFileAndClear(filename, context);
-                FileMethods.appendToFile((filename + "|").getBytes(), "listoftracks.config", context);
+                FileMethods.appendToFile((filename + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILENAME, context);
 
                 SensorsService.totalRoute.clear();
                 serviceIsRunning = false;
@@ -97,5 +99,18 @@ public class RouterRecorder {
             }
         };
         Utils.requestStringInDialog("Route saving", "File name:", formattedDate, input, onClickListener, (Activity)context, context);
+    }
+
+    public int deleteAllTracks(){
+        if (FileMethods.fileSize(MainActivity.LIST_OF_TRACKS_FILENAME, context) < 8) return 0;
+
+        String[] files = FileMethods.readFileToString(MainActivity.LIST_OF_TRACKS_FILENAME, context).split("\\|");
+        File dir = context.getFilesDir();
+
+        for (String s : files)
+            new File(dir, s).delete();
+
+        FileMethods.clearFile(MainActivity.LIST_OF_TRACKS_FILENAME, context);
+        return files.length;
     }
 }

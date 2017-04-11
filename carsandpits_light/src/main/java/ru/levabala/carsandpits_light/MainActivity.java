@@ -3,6 +3,7 @@ package ru.levabala.carsandpits_light;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -26,52 +27,49 @@ import android.widget.ViewFlipper;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
+    //some constants
+    public static String LIST_OF_TRACKS_FILENAME = "listoftracks.config";
+    public static String BUFFER_FILENAME = "buffer.dat";
+    public static String LOCAL_SERVER_ADDRESS = "http://192.168.3.6:3000";
+    public static String GLOBAL_SERVER_ADDRESS = "http://62.84.116.86:3000";
+
+    //my views
     private View fabView;
     private FloatingActionButton fab;
-
-    private Context context;
     private ListView listViewTracks;
+    private TextView tvLocationsCount, tvSignalQuality, tvRouteSize;
+    private ViewFlipper viewFlipper;
+
+    //local vars
+    private Context context;
     private List<String> listOfTracks = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private RouterRecorder routerRecorder;
     private Timer UIUpdateTimer;
     private Activity theActivity;
 
-    private TextView tvLocationsCount, tvSignalQuality, tvRouteSize;
+    //ViewFlipper variables
+    private int currentIndex = 0;
+    final int TRACKS_MANAGES_INDEX = 0;
+    final int TRACK_VIEWER_INDEX = 1;
 
-    public static ViewFlipper viewFlipper;
-    //public static List<Class> activities = new ArrayList<>();
-    public static int currentIndex = 0;
-    public static int TRACKS_MANAGES_INDEX = 0;
-    public static int TRACK_VIEWER_INDEX = 1;
+    //list of permissions which we need to check
+    private List<String> MY_PERMISSIONS = Arrays.asList(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    );;
 
-    public static void switchActivityTo(int index, Context context){
-        if (currentIndex == index) return;
-
-        //Utils.logText("From " + String.valueOf(currentIndex) + " to " + String.valueOf(index), context);
-
-        if (index > currentIndex) {
-            viewFlipper.setInAnimation(context, R.anim.in_from_right);
-            viewFlipper.setOutAnimation(context, R.anim.out_to_left);
-        }
-        else {
-            viewFlipper.setInAnimation(context, R.anim.in_from_left);
-            viewFlipper.setOutAnimation(context, R.anim.out_to_right);
-        }
-        viewFlipper.setDisplayedChild(index);
-
-        //Intent i = new Intent(context, activities.get(index));
-        //context.startActivity(i);
-
-        currentIndex = index;
-    }
-
+    //-------------------------------- OnCreate functions --------------------------------
+    //region OnCreate functions
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //activities.add(MainActivity.class);
@@ -80,6 +78,34 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //registering all views to local variables + some listeners
+        registerViews();
+
+        //let's show how many tracks have we already recorded
+        updatelistViewOfTracks();
+
+        //let's init support classes and variables
+        routerRecorder = new RouterRecorder(context);
+        UIUpdateTimer = new Timer();
+
+        //let's request some permissions
+        for (String permission : MY_PERMISSIONS)
+            requestPermission(permission);
+    }
+
+    private void requestPermission(String permission){
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                //hmm...
+                //what should be here?
+                //text message to user why need we to take access to some smartphone features?
+                Utils.logText("Please, give us the permission", context);
+            } else
+                ActivityCompat.requestPermissions(this, new String[]{permission}, 0);
+    }
+
+    private void registerViews(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -98,39 +124,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listViewTracks = (ListView)findViewById(R.id.listViewTracks);
-        updatelistViewOfTracks();
-
-        routerRecorder = new RouterRecorder(context);
-
-        UIUpdateTimer = new Timer();
-
-        //let's request some permissions
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        0);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }
     }
 
     @Override
@@ -163,6 +156,95 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
+    //endregion
+
+    //-------------------------------- Main functions --------------------------------
+
+    private void startTrack(){
+        switchActivityTo(TRACK_VIEWER_INDEX, context);
+
+        //change fab image to STOP
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white, context.getTheme()));
+        } else {
+            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white));
+        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTrack();
+            }
+        });
+
+        routerRecorder.startRecord();
+
+        //timer to show some track params
+        startUIUpdates();
+        Utils.snackbar("Record was started", fabView);
+    }
+
+    private void saveTrack(){
+        routerRecorder.stopRecord(new CallbackInterface() {
+            @Override
+            public void run() {
+                switchActivityTo(TRACKS_MANAGES_INDEX, context);
+
+                //change fab image to PLUS
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white, context.getTheme()));
+                else
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white));
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showTrackCreatePopup();
+                    }
+                });
+                updatelistViewOfTracks();
+                UIUpdateTimer.cancel();
+
+                Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context), context);
+            }
+        });
+    }
+
+    //-------------------------------- Second-level functions --------------------------------
+    //region Second-level functions
+
+    private String[] getArrayOfFileNames(){
+        String list = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context);
+        return list.split("\\|");
+    }
+
+    private void startUIUpdates(){
+        UIUpdateTimer = new Timer();
+        UIUpdateTimer.scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                theActivity.runOnUiThread(
+                        new Runnable(){
+                            @Override
+                            public void run(){
+                                tvLocationsCount.setText(String.valueOf(SensorsService.totalRoute.size()));
+                                tvSignalQuality.setText(String.valueOf(SensorsService.gpsAccuracy));
+
+                                int fileSizeB = (int)FileMethods.fileSize(BUFFER_FILENAME, context);
+                                float fileSizeKB = (float)fileSizeB / 1024f;
+                                float fileSizeMB = (float)fileSizeB / 1024f / 1024f;
+                                String fileSizeStr = String.format("%.1f", fileSizeKB) + "KB";;
+                                if (fileSizeMB > 10) fileSizeStr = String.format("%.1f", fileSizeMB) + "MB";
+
+                                tvRouteSize.setText(fileSizeStr);
+                            }
+                        });
+            }
+        },0,500);
+    }
+
+    //endregion
+
+    //-------------------------------- Interface methods --------------------------------
+    //region Interface methods
     public void showTrackCreatePopup(){
         // Inflate the popup_layout.xml
         /*LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -198,73 +280,46 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 trackPopup.dismiss();
-                switchActivityTo(TRACK_VIEWER_INDEX, context);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white, context.getTheme()));
-                } else {
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white));
-                }
-
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        saveTrack();
-                    }
-                });
-
-                routerRecorder.startRecord();
-
-                UIUpdateTimer = new Timer();
-                UIUpdateTimer.scheduleAtFixedRate(new TimerTask(){
-                    @Override
-                    public void run(){
-                        theActivity.runOnUiThread(
-                                new Runnable(){
-                                    @Override
-                                    public void run(){
-                                        tvLocationsCount.setText(String.valueOf(SensorsService.totalRoute.size()));
-                                        tvSignalQuality.setText(String.valueOf(SensorsService.gpsAccuracy));
-
-                                        int fileSizeB = (int)FileMethods.fileSize("buffer.dat", context);
-                                        float fileSizeKB = (float)fileSizeB / 1024f;
-                                        float fileSizeMB = (float)fileSizeB / 1024f / 1024f;
-                                        String fileSizeStr = String.format("%.1f", fileSizeKB) + "KB";;
-                                        if (fileSizeMB > 10) fileSizeStr = String.format("%.1f", fileSizeMB) + "MB";
-
-                                        tvRouteSize.setText(fileSizeStr);
-                                    }
-                                });
-                    }
-                },0,500);
-                Utils.snackbar("Record was started", fabView);
+                startTrack();
             }
         });
     }
 
-    public void saveTrack(){
-        routerRecorder.stopRecord(new CallbackInterface() {
-            @Override
-            public void run() {
-                switchActivityTo(0,context);
+    private void switchActivityTo(int index, Context context){
+        if (currentIndex == index) return;
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white, context.getTheme()));
-                else
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_plus_white));
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showTrackCreatePopup();
-                    }
-                });
+        //Utils.logText("From " + String.valueOf(currentIndex) + " to " + String.valueOf(index), context);
 
-                Utils.logText(FileMethods.readFileToString("listoftracks.config", context), context);
-            }
-        });
+        if (index > currentIndex) {
+            viewFlipper.setInAnimation(context, R.anim.in_from_right);
+            viewFlipper.setOutAnimation(context, R.anim.out_to_left);
+        }
+        else {
+            viewFlipper.setInAnimation(context, R.anim.in_from_left);
+            viewFlipper.setOutAnimation(context, R.anim.out_to_right);
+        }
+        viewFlipper.setDisplayedChild(index);
+
+        //Intent i = new Intent(context, activities.get(index));
+        //context.startActivity(i);
+
+        currentIndex = index;
+    }
+
+    public void updatelistViewOfTracks(){
+        listOfTracks = new ArrayList<>();
+
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,listOfTracks);
+        listViewTracks.setAdapter(adapter);
+
+        String[] arr = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context).split("\\|");
+        for (String s : arr)
+            if (s.length() != 0)
+                listOfTracks.add(s);
     }
 
     public void showTracksOnMap(View view){
-        String listoftracks = FileMethods.readFileToString("listoftracks.config", context);
+        String listoftracks = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context);
         String[] arr = listoftracks.split("\\|");
         String str = "";
         for (String s : arr)
@@ -272,30 +327,30 @@ public class MainActivity extends AppCompatActivity {
         Utils.logText(str, context);
     }
 
-    private void updatelistViewOfTracks(){
-        listOfTracks = new ArrayList<>();
+    public void sendChosenTracks(View view){
 
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,listOfTracks);
-        listViewTracks.setAdapter(adapter);
-        //setListAdapter(adapter);
-
-        //String[] arr = getArrayOfFileNames();
-        /*String[] arr = new String[10];
-        arr[0] = "Track1";
-        arr[1] = "Track2";
-        arr[2] = "Track3";
-        arr[3] = "Track4";
-        arr[4] = "Track5";
-        arr[5] = "Track6";
-        arr[6] = "Track7";
-        arr[7] = "Track8";
-        arr[8] = "Track9";
-        arr[9] = "Track10";
-        String str = "";
-        for (String s : arr) {
-            str += s;
-            if (s.length() != 0)
-                listOfTracks.add(s);//.split("\\+")[0]);
-        }*/
     }
+
+    public void deleteAllTracks(View view){
+        Utils.requestAcceptDialog(
+                "Deleting tracks", "Delete all your tracks?",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int deleteFilesCount = routerRecorder.deleteAllTracks();
+                        updatelistViewOfTracks();
+                        Utils.logText(String.valueOf(deleteFilesCount) + " files deleted", context);
+                        Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context), context);
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Utils.logText("Nice choice", context);
+                    }
+                }, context
+        );
+    }
+
+    //endregion
 }
