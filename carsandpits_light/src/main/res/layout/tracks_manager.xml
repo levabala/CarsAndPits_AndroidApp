@@ -53,7 +53,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:onClick="showTracksOnMap"
-            android:text="Show on map" />
+            android:text="Show on map"
+            android:layout_toLeftOf="@+id/buttonClearTracks"
+            android:layout_toStartOf="@+id/buttonClearTracks" />
 
         <Button
             android:id="@+id/button3"
@@ -62,18 +64,9 @@
             android:layout_above="@+id/buttonShowOnMap"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Join tracks" />
-
-        <Switch
-            android:id="@+id/switchServerType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/listViewTracks"
-            android:checked="true"
-            android:splitTrack="false"
-            android:text="Global server" />
+            android:text="Join tracks"
+            android:layout_toLeftOf="@+id/buttonClearTracks"
+            android:layout_toStartOf="@+id/buttonClearTracks" />
 
         <Button
             android:id="@+id/buttonClearTracks"
@@ -81,9 +74,32 @@
             android:layout_height="wrap_content"
             android:onClick="deleteAllTracks"
             android:text="Clear tracks"
-            android:layout_above="@+id/buttonSendToServer"
+            android:layout_alignParentBottom="true"
             android:layout_toRightOf="@+id/buttonSendToServer"
-            android:layout_toEndOf="@+id/buttonSendToServer" />
+            android:layout_toEndOf="@+id/buttonSendToServer"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/buttonClearTracks"
+            android:layout_alignLeft="@+id/buttonClearTracks"
+            android:layout_alignRight="@+id/buttonClearTracks"
+            android:layout_alignStart="@+id/buttonClearTracks"
+            android:layout_below="@+id/button3"
+            android:text="A Button" />
+
+        <CheckBox
+            android:id="@+id/checkBoxGlobalServer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/listViewTracks"
+            android:checked="true"
+            android:text="Global \nserver" />
 
     </RelativeLayout>
 </LinearLayout>

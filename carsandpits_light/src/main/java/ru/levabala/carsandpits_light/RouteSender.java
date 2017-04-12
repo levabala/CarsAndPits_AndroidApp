@@ -18,8 +18,8 @@ public class RouteSender {
         this.context = context;
     }
 
-    public void sendRoute(String filename, String serverUrl){
-        new SendHttpReq().execute(new RouteSendParams(FileMethods.readFile(filename, context), serverUrl));
+    public void sendRoute(byte[] route, String serverUrl){
+        new SendHttpReq().execute(new RouteSendParams(route, serverUrl));
     }
 
     //private String LOCAL_SERVER_ADDRESS = "http://192.168.3.6:3000";

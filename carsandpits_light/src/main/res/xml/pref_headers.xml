@@ -1,0 +1,11 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="ru.levabala.carsandpits_light.SettingsActivity$TrackRecoringPreferenceFragment"
+        android:icon="@drawable/ic_menu_24dp"
+        android:title="@string/pref_track_recording"
+        />
+
+</preference-headers>

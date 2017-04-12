@@ -4,24 +4,34 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -48,14 +58,17 @@ public class MainActivity extends AppCompatActivity {
     private ListView listViewTracks;
     private TextView tvLocationsCount, tvSignalQuality, tvRouteSize;
     private ViewFlipper viewFlipper;
+    private CheckBox checkBoxGlobalServer;
 
     //local vars
     private Context context;
     private List<String> listOfTracks = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private RouterRecorder routerRecorder;
+    private RouteSender routeSender;
     private Timer UIUpdateTimer;
     private Activity theActivity;
+    private SharedPreferences applicationPrefs;
 
     //ViewFlipper variables
     private int currentIndex = 0;
@@ -77,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         theActivity = (Activity)context;
 
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
 
         //registering all views to local variables + some listeners
@@ -87,7 +101,14 @@ public class MainActivity extends AppCompatActivity {
 
         //let's init support classes and variables
         routerRecorder = new RouterRecorder(context);
+        routeSender = new RouteSender(context);
         UIUpdateTimer = new Timer();
+        applicationPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        //now a couple of configuration settings
+        if (!applicationPrefs.contains("LOCAL_SERVER_ADDRESS"))
+            applicationPrefs.edit().putString("LOCAL_SERVER_ADDRESS", LOCAL_SERVER_ADDRESS).apply();
+        else LOCAL_SERVER_ADDRESS = applicationPrefs.getString("LOCAL_SERVER_ADDRESS", LOCAL_SERVER_ADDRESS);
 
         //let's request some permissions
         for (String permission : MY_PERMISSIONS)
@@ -113,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         tvLocationsCount = (TextView)findViewById(R.id.textViewLocationsCount);
         tvRouteSize = (TextView)findViewById(R.id.textViewRouteSize);
         tvSignalQuality = (TextView)findViewById(R.id.textViewSignalQuality);
+        checkBoxGlobalServer = (CheckBox)findViewById(R.id.checkBoxGlobalServer);
 
         fabView = findViewById(R.id.fab);
         fab = (FloatingActionButton) fabView;
@@ -142,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(context, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -160,15 +183,15 @@ public class MainActivity extends AppCompatActivity {
 
     //-------------------------------- Main functions --------------------------------
 
-    private void startTrack(){
+    public void startTrack(){
         switchActivityTo(TRACK_VIEWER_INDEX, context);
 
         //change fab image to STOP
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        Drawable d = ContextCompat.getDrawable(context, R.drawable.ic_action_stop_white);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white, context.getTheme()));
-        } else {
+        else
             fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_stop_white));
-        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +268,27 @@ public class MainActivity extends AppCompatActivity {
 
     //-------------------------------- Interface methods --------------------------------
     //region Interface methods
+    private void switchActivityTo(int index, Context context){
+        if (currentIndex == index) return;
+
+        //Utils.logText("From " + String.valueOf(currentIndex) + " to " + String.valueOf(index), context);
+
+        if (index > currentIndex) {
+            viewFlipper.setInAnimation(context, R.anim.in_from_right);
+            viewFlipper.setOutAnimation(context, R.anim.out_to_left);
+        }
+        else {
+            viewFlipper.setInAnimation(context, R.anim.in_from_left);
+            viewFlipper.setOutAnimation(context, R.anim.out_to_right);
+        }
+        viewFlipper.setDisplayedChild(index);
+
+        //Intent i = new Intent(context, activities.get(index));
+        //context.startActivity(i);
+
+        currentIndex = index;
+    }
+
     public void showTrackCreatePopup(){
         // Inflate the popup_layout.xml
         /*LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -285,27 +329,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void switchActivityTo(int index, Context context){
-        if (currentIndex == index) return;
-
-        //Utils.logText("From " + String.valueOf(currentIndex) + " to " + String.valueOf(index), context);
-
-        if (index > currentIndex) {
-            viewFlipper.setInAnimation(context, R.anim.in_from_right);
-            viewFlipper.setOutAnimation(context, R.anim.out_to_left);
-        }
-        else {
-            viewFlipper.setInAnimation(context, R.anim.in_from_left);
-            viewFlipper.setOutAnimation(context, R.anim.out_to_right);
-        }
-        viewFlipper.setDisplayedChild(index);
-
-        //Intent i = new Intent(context, activities.get(index));
-        //context.startActivity(i);
-
-        currentIndex = index;
-    }
-
     public void updatelistViewOfTracks(){
         listOfTracks = new ArrayList<>();
 
@@ -328,7 +351,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendChosenTracks(View view){
+        String serverUrl = GLOBAL_SERVER_ADDRESS;
+        if (!checkBoxGlobalServer.isChecked())
+            serverUrl = LOCAL_SERVER_ADDRESS;
 
+        for (String filename : getCheckedFilesList())
+            routeSender.sendRoute(FileMethods.readFile(filename, context), serverUrl);
+    }
+
+    public void requestNewLocalServerUrl(View view){
+
+    }
+
+    private List<String> getCheckedFilesList(){
+        SparseBooleanArray checked = listViewTracks.getCheckedItemPositions();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < listViewTracks.getAdapter().getCount(); i++) {
+            if (checked.get(i))
+                list.add((String)listViewTracks.getItemAtPosition(i));
+        }
+        return list;
     }
 
     public void deleteAllTracks(View view){
