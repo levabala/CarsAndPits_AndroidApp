@@ -1,8 +1,13 @@
 package ru.levabala.carsandpits_light;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.ubjson.io.ByteArrayInputStream;
+import org.ubjson.io.UBJInputStream;
+import org.ubjson.io.UBJOutputStream;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -19,6 +24,18 @@ import java.io.PrintWriter;
  */
 
 public class FileMethods {
+        public static void parseUBJSON(byte[] bytes) {
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(bytes);
+        UBJInputStream in = new UBJInputStream(byteIn);
+
+        try {
+
+        }
+        catch (Exception e){
+            Log.e("MY_TAG", e.toString());
+        }
+    }
+
     public static void appendToFile(byte[] data, String filename, Context context){
         FileOutputStream outputStream;
         try {

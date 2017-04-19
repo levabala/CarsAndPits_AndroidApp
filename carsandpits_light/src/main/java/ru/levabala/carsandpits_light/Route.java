@@ -1,10 +1,15 @@
 package ru.levabala.carsandpits_light;
 
 import android.content.Context;
+import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.ubjson.io.UBJOutputStream;
+
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -90,6 +95,80 @@ public class Route {
         }
 
         return r;
+    }
+
+    public byte[] serializeToUBJSON(Route route, Context context){
+        //region route format
+        /*
+        {
+            header: {
+                startTime: recording start time(int64),
+                id: random generated 64bit-hash(string)
+            }
+            route: [
+                //route point format
+                [
+                    latitude(float32),
+                    longitude(float32),
+
+                    //accelerations array
+                    [
+                        //acceleration point
+                        [
+                            X(float32),
+                            Y(float32),
+                            Z(float32),
+                            deltaTime(int32)
+                        ],
+                        + ...
+                    ]
+                ],
+                + ...
+            ]
+        }
+        */
+        //endregion
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        UBJOutputStream out = new UBJOutputStream(byteOut);
+
+        try {
+            //total object
+            out.writeObjectHeader(2);
+
+
+            //header
+            out.writeString("header");
+            out.writeObjectHeader(2);
+                out.writeString("startTime");
+                out.writeInt64(route.startTime);
+                out.writeString("id");
+                out.writeString(MainActivity.DEVICE_UNIQUE_ID);
+
+            //route
+            out.writeString("header");
+            out.writeArrayHeader(route.routePoints.size());
+            for (RoutePoint routePoint : route.routePoints){
+                out.writeArrayHeader(3);
+                out.writeFloat((float)routePoint.position.latitude);
+                out.writeFloat((float)routePoint.position.longitude);
+
+                out.writeArrayHeader(routePoint.accelerations.length);
+                for (Point3dWithTime accPoint : routePoint.accelerations){
+                    out.writeArrayHeader(4);
+                    out.writeFloat(accPoint.x);
+                    out.writeFloat(accPoint.y);
+                    out.writeFloat(accPoint.z);
+                    out.writeInt32(accPoint.deltaTime);
+                }
+            }
+            out.writeEnd();
+
+        }
+        catch (Exception e){
+            Log.e("MY_TAG", e.toString());
+        }
+
+        return byteOut.toByteArray();
     }
 
     private static void logText(String text, Context context) {

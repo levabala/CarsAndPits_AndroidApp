@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/carsandpits_light" />
             <option value="$PROJECT_DIR$/carsandpits_v2" />
             <option value="$PROJECT_DIR$/testing" />
+            <option value="$PROJECT_DIR$/universal-binary-json-java-master" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

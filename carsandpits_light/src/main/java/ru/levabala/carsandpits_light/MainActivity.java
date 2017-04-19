@@ -42,6 +42,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.ubjson.io.UBJOutputStream;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -51,6 +52,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public static String BUFFER_FILENAME = "buffer.dat";
     public static String LOCAL_SERVER_ADDRESS = "http://192.168.3.6:3000";
     public static String GLOBAL_SERVER_ADDRESS = "http://62.84.116.86:3000";
+    public static String DEVICE_UNIQUE_ID = "unknown";
 
     //my views
     private View fabView;
@@ -124,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
         if (!applicationPrefs.contains("LOCAL_SERVER_ADDRESS"))
             applicationPrefs.edit().putString("LOCAL_SERVER_ADDRESS", LOCAL_SERVER_ADDRESS).apply();
         else LOCAL_SERVER_ADDRESS = applicationPrefs.getString("LOCAL_SERVER_ADDRESS", LOCAL_SERVER_ADDRESS);
+
+        //let's check for exist your unique id
+        if (!applicationPrefs.contains("DEVICE_UNIQUE_ID"))
+            applicationPrefs.edit().putString("DEVICE_UNIQUE_ID", UUID.randomUUID().toString()).apply();
+        else DEVICE_UNIQUE_ID = applicationPrefs.getString("DEVICE_UNIQUE_ID", DEVICE_UNIQUE_ID);
 
         //let's request some permissions
         for (String permission : MY_PERMISSIONS)

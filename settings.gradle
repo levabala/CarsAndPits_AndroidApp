@@ -1,1 +1,1 @@
-include ':app', ':carsandpits_v2', ':testing', ':carsandpits_light'
+include ':app', ':carsandpits_v2', ':testing', ':carsandpits_light', ':universal-binary-json-java-master'
