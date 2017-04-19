@@ -25,15 +25,14 @@
             android:id="@+id/listViewTracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/button3"
+            android:layout_above="@+id/buttonShareTracks"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView"
-            android:layout_marginTop="5dp"
             android:choiceMode="multipleChoice"
             android:clickable="false"
             android:background="@drawable/card_background"
-            android:transcriptMode="alwaysScroll" />
+            android:transcriptMode="alwaysScroll"
+            android:layout_below="@+id/textView" />
 
         <Button
             android:id="@+id/buttonSendToServer"
@@ -61,12 +60,12 @@
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/buttonShowOnMap"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:text="Join tracks"
-            android:layout_toLeftOf="@+id/buttonClearTracks"
-            android:layout_toStartOf="@+id/buttonClearTracks" />
+            android:layout_alignLeft="@+id/buttonRewriteColorServerUrl"
+            android:layout_alignStart="@+id/buttonRewriteColorServerUrl"
+            android:layout_above="@+id/buttonRewriteColorServerUrl"
+            android:layout_alignRight="@+id/buttonRewriteColorServerUrl"
+            android:layout_alignEnd="@+id/buttonRewriteColorServerUrl" />
 
         <Button
             android:id="@+id/buttonClearTracks"
@@ -81,15 +80,17 @@
             android:layout_marginStart="11dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonRewriteColorServerUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonClearTracks"
             android:layout_alignEnd="@+id/buttonClearTracks"
             android:layout_alignLeft="@+id/buttonClearTracks"
             android:layout_alignRight="@+id/buttonClearTracks"
             android:layout_alignStart="@+id/buttonClearTracks"
-            android:layout_below="@+id/button3"
-            android:text="A Button" />
+            android:onClick="requestNewLocalServerUrl"
+            android:text="Set url"
+            android:layout_below="@+id/buttonShareTracks" />
 
         <CheckBox
             android:id="@+id/checkBoxGlobalServer"
@@ -100,6 +101,18 @@
             android:layout_below="@+id/listViewTracks"
             android:checked="true"
             android:text="Global \nserver" />
+
+        <Button
+            android:id="@+id/buttonShareTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonShowOnMap"
+            android:layout_alignEnd="@+id/buttonShowOnMap"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/buttonShowOnMap"
+            android:onClick="shareChosenTracks"
+            android:text="Share tracks" />
 
     </RelativeLayout>
 </LinearLayout>

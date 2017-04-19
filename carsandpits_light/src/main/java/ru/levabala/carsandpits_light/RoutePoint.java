@@ -25,7 +25,10 @@ public class RoutePoint{
 
     public static byte[] getBytes(RoutePoint rp){
         //format is:
+        //start time[long]
         //latitude[float] longitude[float] list.size[int] Point#1[floatx3 + int] Point#2[floatx3 + int] + ...
+        //8bytes
+        //4bytes 4bytes 4bytes (4bytes x3 4bytes) (4bytes x3 4bytes) (4bytes x3 4bytes) + ...
         int arraySize = RoutePoint.getBytesLength(rp);
         ByteArrayOutputStream bos = new ByteArrayOutputStream(arraySize);
         DataOutputStream dos = new DataOutputStream(bos);

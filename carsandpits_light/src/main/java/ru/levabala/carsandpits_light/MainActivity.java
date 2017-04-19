@@ -7,14 +7,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -23,10 +28,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ListView listViewTracks;
     private TextView tvLocationsCount, tvSignalQuality, tvRouteSize;
+    private TextView tvAxisX, tvAxisY, tvAxisZ;
     private ViewFlipper viewFlipper;
     private CheckBox checkBoxGlobalServer;
 
@@ -69,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private Timer UIUpdateTimer;
     private Activity theActivity;
     private SharedPreferences applicationPrefs;
+    private PowerManager.WakeLock mWakeLock;
 
     //ViewFlipper variables
     private int currentIndex = 0;
@@ -92,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
+
+        //wake lock
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        mWakeLock.acquire();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //registering all views to local variables + some listeners
         registerViews();
@@ -133,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
         tvLocationsCount = (TextView)findViewById(R.id.textViewLocationsCount);
         tvRouteSize = (TextView)findViewById(R.id.textViewRouteSize);
+        tvAxisX = (TextView)findViewById(R.id.textViewAxisX);
+        tvAxisY = (TextView)findViewById(R.id.textViewAxisY);
+        tvAxisZ = (TextView)findViewById(R.id.textViewAxisZ);
         tvSignalQuality = (TextView)findViewById(R.id.textViewSignalQuality);
         checkBoxGlobalServer = (CheckBox)findViewById(R.id.checkBoxGlobalServer);
 
@@ -177,6 +195,18 @@ public class MainActivity extends AppCompatActivity {
             switchActivityTo(0, context);
         else
             super.onBackPressed();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        switchActivityTo(currentIndex, context);
+    }
+
+    @Override
+    public void onDestroy() {
+        mWakeLock.release();
+        super.onDestroy();
     }
 
     //endregion
@@ -225,8 +255,6 @@ public class MainActivity extends AppCompatActivity {
                 });
                 updatelistViewOfTracks();
                 UIUpdateTimer.cancel();
-
-                Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context), context);
             }
         });
     }
@@ -258,6 +286,14 @@ public class MainActivity extends AppCompatActivity {
                                 if (fileSizeMB > 10) fileSizeStr = String.format("%.1f", fileSizeMB) + "MB";
 
                                 tvRouteSize.setText(fileSizeStr);
+
+                                if (SensorsService.totalRoute.size() == 0) return;
+                                RoutePoint lastRoutePoint = SensorsService.totalRoute.get(SensorsService.totalRoute.size()-1);
+                                if (lastRoutePoint.accelerations.length == 0) return;
+                                Point3dWithTime lastAccPoint = lastRoutePoint.accelerations[lastRoutePoint.accelerations.length-1];
+                                tvAxisX.setText(String.valueOf(lastAccPoint.x));
+                                tvAxisY.setText(String.valueOf(lastAccPoint.y));
+                                tvAxisZ.setText(String.valueOf(lastAccPoint.z));
                             }
                         });
             }
@@ -336,9 +372,11 @@ public class MainActivity extends AppCompatActivity {
         listViewTracks.setAdapter(adapter);
 
         String[] arr = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context).split("\\|");
-        for (String s : arr)
+        for (int i = arr.length-1; i > 0; i--) {
+            String s = arr[i];
             if (s.length() != 0)
                 listOfTracks.add(s);
+        }
     }
 
     public void showTracksOnMap(View view){
@@ -359,8 +397,48 @@ public class MainActivity extends AppCompatActivity {
             routeSender.sendRoute(FileMethods.readFile(filename, context), serverUrl);
     }
 
-    public void requestNewLocalServerUrl(View view){
+    public void shareChosenTracks(View view){
+        ArrayList<Uri> list = new ArrayList<Uri>();
+        for (String filename : getCheckedFilesList()) {
+            File file = new File(context.getFilesDir(), filename);
+            Uri contentUri = FileProvider.getUriForFile(MainActivity.this,
+                    "ru.levabala.carsandpits_light", file);
+            list.add(contentUri);
+            //list.add(FileProvider.getUriForFile(context, "ru.levabala.carsandpits_light", new File(context.getFilesDir().getAbsolutePath() + "/" + filename)));
+        }
 
+        Intent shareIntent = new Intent();
+
+        //let's grant our share intent to work with the tracks
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> resInfoList = packageManager.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            for (Uri uri : list)
+                context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+
+        shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        //shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, list);
+        //shareIntent.putExtra(Intent.EXTRA_STREAM,list.get(0));
+        shareIntent.setType("image/*");
+        startActivity(Intent.createChooser(shareIntent, "Share tracks to.."));
+    }
+
+    public void requestNewLocalServerUrl(View view){
+        final EditText input = new EditText(context);
+        Utils.requestStringInDialog("Local server URL", "Edit local server address", LOCAL_SERVER_ADDRESS, input,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LOCAL_SERVER_ADDRESS = input.getText().toString();
+                        applicationPrefs.edit().putString("LOCAL_SERVER_ADDRESS", LOCAL_SERVER_ADDRESS).apply();
+
+                        Utils.logText("Local server address changed to " + LOCAL_SERVER_ADDRESS, context);
+                    }
+                }, theActivity, context);
     }
 
     private List<String> getCheckedFilesList(){

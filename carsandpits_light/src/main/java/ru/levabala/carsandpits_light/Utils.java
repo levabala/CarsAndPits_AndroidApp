@@ -26,7 +26,7 @@ public class Utils {
     }
 
     public static void requestStringInDialog(String title, String message, String defaultString, EditText input,
-                                             DialogInterface.OnClickListener onClickListener, Activity activity, Context context){
+                                             DialogInterface.OnClickListener onPositiveListener, Activity activity, Context context){
         input.setText(defaultString);
         input.selectAll();
         AlertDialog alert = new AlertDialog.Builder(context)
@@ -34,7 +34,7 @@ public class Utils {
                 .setMessage(message)
                 .setView(input)
                 .setNegativeButton(android.R.string.cancel, null) // dismisses by default
-                .setPositiveButton(android.R.string.ok, onClickListener)
+                .setPositiveButton(android.R.string.ok, onPositiveListener)
                 .create();
         alert.show();
         if(input.requestFocus())

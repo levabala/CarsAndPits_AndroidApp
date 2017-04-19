@@ -88,13 +88,19 @@ public class RouterRecorder {
                     Utils.logText("Not saved. You can't use the names:\n'buffer.dat'\n'listoftracks.config'", context);
                     return;
                 }
-                FileMethods.saveBufferToFileAndClear(filename, context);
+
+                FileMethods.copyFromTo(MainActivity.BUFFER_FILENAME, filename, context);
+                FileMethods.appendToFile("Some text..".getBytes(), input.getText().toString() + ".txt", context);
+                FileMethods.clearFile(MainActivity.BUFFER_FILENAME, context);
                 FileMethods.appendToFile((filename + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILENAME, context);
+                FileMethods.appendToFile((input.getText().toString() + ".txt" + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILENAME, context);
+
+
+                Utils.logText("Saved as " + filename + "\nSize: "
+                        + String.valueOf(FileMethods.fileSize(filename, context)) + "B", context);
 
                 SensorsService.totalRoute.clear();
                 serviceIsRunning = false;
-
-                Utils.logText("Route saved", context);
                 callback.run();
             }
         };

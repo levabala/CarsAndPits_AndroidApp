@@ -19,6 +19,7 @@ public class RouteSender {
     }
 
     public void sendRoute(byte[] route, String serverUrl){
+        Utils.logText(String.valueOf(route.length), context);
         new SendHttpReq().execute(new RouteSendParams(route, serverUrl));
     }
 

@@ -36,7 +36,7 @@ public class SensorsService extends Service implements SensorEventListener {
     private long lastTime = System.currentTimeMillis();
 
     //region Location detecting
-    private static final int CRITICAL_TIME = 1000 * 2; //20 seconds
+    private static final int CRITICAL_TIME = 1000 * 2; //2s seconds
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 0f;
     private LocationManager mLocationManager = null;
@@ -82,7 +82,6 @@ public class SensorsService extends Service implements SensorEventListener {
         @Override
         public void onLocationChanged(Location location)
         {
-            //logText("New location");
             //Log.e(TAG, "onLocationChanged: " + location);
             gpsAccuracy = location.getAccuracy();
             if (isBetterLocation(location,mLastLocation)){
@@ -324,7 +323,7 @@ public class SensorsService extends Service implements SensorEventListener {
 
         try {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
-            //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
         }
         catch (SecurityException e){
             logText("requestLocationUpdating ERROR\n" + e.toString());
@@ -390,11 +389,13 @@ public class SensorsService extends Service implements SensorEventListener {
         if (!isRunning) return;
         mLocationManager.removeUpdates(mLocationListener);
         isRunning = false;
+        logText(String.valueOf(isRunning));
     }
 
     private void Resume(){
         if (isRunning) return;
         requestLocationUpdating();
         isRunning = true;
+        logText(String.valueOf(isRunning));
     }
 }

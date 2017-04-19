@@ -1,6 +1,8 @@
 package ru.levabala.carsandpits_light;
 
 import android.content.Context;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -19,12 +21,12 @@ import java.io.PrintWriter;
 public class FileMethods {
     public static void appendToFile(byte[] data, String filename, Context context){
         FileOutputStream outputStream;
-
         try {
             outputStream = context.openFileOutput(filename, Context.MODE_APPEND);
             outputStream.write(data);
             outputStream.close();
         } catch (Exception e) {
+            Utils.logText("ERROR appendToFile\n" + e.toString(), context);
             e.printStackTrace();
         }
     }
@@ -37,14 +39,17 @@ public class FileMethods {
             writer.close();
         }
         catch (FileNotFoundException e){
+            Utils.logText("ERROR clearFile\n" + e.toString(), context);
             e.printStackTrace();
         }
     }
 
     public static void copyFromTo(String filenameFrom, String filenameTo, Context context){
         try {
-            InputStream in = context.openFileInput(filenameTo);
-            OutputStream out = context.openFileOutput(filenameFrom, Context.MODE_PRIVATE);
+            context.getFilesDir().mkdirs();
+
+            InputStream in = context.openFileInput(filenameFrom);
+            OutputStream out = context.openFileOutput(filenameTo, Context.MODE_PRIVATE);
 
             // Transfer bytes from in to out
             byte[] buf = new byte[1024];
@@ -56,7 +61,7 @@ public class FileMethods {
             out.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            Utils.logText("ERROR copyFromTo\n" + e.toString(), context);
         }
     }
 
@@ -80,6 +85,7 @@ public class FileMethods {
                 ret = stringBuilder.toString();
             }
         } catch (Exception e){
+            Utils.logText("ERROR readFileToString\n" + e.toString(), context);
             e.printStackTrace();
         }
 
@@ -98,6 +104,7 @@ public class FileMethods {
             }
             bytes = bos.toByteArray();
         } catch (Exception e){
+            Utils.logText("ERROR readFile\n" + e.toString(), context);
             e.printStackTrace();
         }
         return bytes;
