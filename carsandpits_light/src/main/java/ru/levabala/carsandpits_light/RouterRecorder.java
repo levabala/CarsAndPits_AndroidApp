@@ -83,21 +83,16 @@ public class RouterRecorder {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String filename = input.getText().toString() + ".dat";
+                File file = FileMethods.getExternalFile(filename);
                 //checking for app-reserved files
                 if (filename.equals(MainActivity.BUFFER_FILENAME) || filename.equals(MainActivity.LIST_OF_TRACKS_FILENAME)){
                     Utils.logText("Not saved. You can't use the names:\n'buffer.dat'\n'listoftracks.config'", context);
                     return;
                 }
-
-                FileMethods.copyFromTo(MainActivity.BUFFER_FILENAME, filename, context);
-                FileMethods.appendToFile("Some text..".getBytes(), input.getText().toString() + ".txt", context);
-                FileMethods.clearFile(MainActivity.BUFFER_FILENAME, context);
-                FileMethods.appendToFile((filename + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILENAME, context);
-                FileMethods.appendToFile((input.getText().toString() + ".txt" + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILENAME, context);
-
+                saveRecordedRoute(file);
 
                 Utils.logText("Saved as " + filename + "\nSize: "
-                        + String.valueOf(FileMethods.fileSize(filename, context)) + "B", context);
+                        + String.valueOf(file.length()) + "B", context);
 
                 SensorsService.totalRoute.clear();
                 serviceIsRunning = false;
@@ -107,16 +102,22 @@ public class RouterRecorder {
         Utils.requestStringInDialog("Route saving", "File name:", formattedDate, input, onClickListener, (Activity)context, context);
     }
 
-    public int deleteAllTracks(){
-        if (FileMethods.fileSize(MainActivity.LIST_OF_TRACKS_FILENAME, context) < 8) return 0;
+    public void saveRecordedRoute(File file){
+        FileMethods.copyFromTo(MainActivity.BUFFER_FILE, file, context);
+        FileMethods.clearFile(MainActivity.BUFFER_FILE, context);
+        FileMethods.appendToFile((file.getName() + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILE, context);
+    }
 
-        String[] files = FileMethods.readFileToString(MainActivity.LIST_OF_TRACKS_FILENAME, context).split("\\|");
+    public int deleteAllTracks(){
+        if (MainActivity.LIST_OF_TRACKS_FILE.length() < 8) return 0;
+
+        String[] files = FileMethods.readFileToString(MainActivity.LIST_OF_TRACKS_FILE, context).split("\\|");
         File dir = context.getFilesDir();
 
         for (String s : files)
             new File(dir, s).delete();
 
-        FileMethods.clearFile(MainActivity.LIST_OF_TRACKS_FILENAME, context);
+        FileMethods.clearFile(MainActivity.LIST_OF_TRACKS_FILE, context);
         return files.length;
     }
 }

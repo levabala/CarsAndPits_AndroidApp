@@ -42,6 +42,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.ubjson.io.UBJOutputStream;
 import org.w3c.dom.Text;
 
@@ -49,10 +51,14 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+
+import ru.levabala.carsandpits_light.Event.Event;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
@@ -61,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public static String LOCAL_SERVER_ADDRESS = "http://192.168.3.6:3000";
     public static String GLOBAL_SERVER_ADDRESS = "http://62.84.116.86:3000";
     public static String DEVICE_UNIQUE_ID = "unknown";
+    public static File BUFFER_FILE;
+    public static File LIST_OF_TRACKS_FILE;
 
     //my views
     private View fabView;
@@ -74,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     //local vars
     private Context context;
     private List<String> listOfTracks = new ArrayList<>();
+    private Map<String, File> nameToTrack = new HashMap<>();
     private ArrayAdapter<String> adapter;
     private RouterRecorder routerRecorder;
     private RouteSender routeSender;
@@ -90,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
     //list of permissions which we need to check
     private List<String> MY_PERMISSIONS = Arrays.asList(
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.WAKE_LOCK
     );;
 
     //-------------------------------- OnCreate functions --------------------------------
@@ -104,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
+
+        //let's set some static vars
+        BUFFER_FILE = FileMethods.getInternalFile(BUFFER_FILENAME, context);
+        LIST_OF_TRACKS_FILE = FileMethods.getInternalFile(LIST_OF_TRACKS_FILENAME, context);
 
         //wake lock
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -136,6 +151,61 @@ public class MainActivity extends AppCompatActivity {
         //let's request some permissions
         for (String permission : MY_PERMISSIONS)
             requestPermission(permission);
+
+        //now we need to check out filestree
+        FileMethods.checkAndCreateOurFolders(context);
+
+        //region UBJSON testing
+        Route routeForSerializing = new Route();
+        routeForSerializing.startTime = 100500900;
+        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(100,100), new Point3dWithTime[]{
+                new Point3dWithTime(0,0,0,10),
+                new Point3dWithTime(0,4,0,9),
+                new Point3dWithTime(1,0,0,10),
+                new Point3dWithTime(0,0,0,9),
+                new Point3dWithTime(0,3,3,2),
+                new Point3dWithTime(1,1,2,8),
+                new Point3dWithTime(1,0,0,5),
+                new Point3dWithTime(0,0,8,6)
+        }));
+        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(110,103), new Point3dWithTime[]{
+                new Point3dWithTime(0,0,0,7),
+                new Point3dWithTime(0,1,0,9),
+                new Point3dWithTime(1,0,3,10),
+                new Point3dWithTime(2,0,0,9),
+                new Point3dWithTime(0,7,0,10),
+                new Point3dWithTime(1,1,2,10),
+                new Point3dWithTime(1,3,0,8),
+                new Point3dWithTime(1,0,1,10)
+        }));
+        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(120,95), new Point3dWithTime[]{
+                new Point3dWithTime(0,0,1,10),
+                new Point3dWithTime(0,0,0,9),
+                new Point3dWithTime(3,0,0,10),
+                new Point3dWithTime(2,2,0,9),
+                new Point3dWithTime(0,3,3,10),
+                new Point3dWithTime(2,8,8,10),
+                new Point3dWithTime(0,2,0,10),
+                new Point3dWithTime(1,0,2,10)
+        }));
+
+        byte[] serializedRoute = routeForSerializing.serializeToUBJSON(routeForSerializing, context);
+
+        //FileMethods.appendToFile(serializedRoute, FileMethods.getExternalFile("testRouteUBJSON.txt"), context);
+        //FileMethods.appendToFile(("testRouteUBJSON.txt" + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILE, context);
+
+/*
+        Intent shareIntent = new Intent();
+        File file = FileMethods.getExternalFile("2017-04-23_07:36:18.992.dat");
+        Uri uri = FileProvider.getUriForFile(context, "ru.levabala.carsandpits_light", file);
+
+        shareIntent.setAction(Intent.ACTION_SEND);
+        //shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.setType("image/*");
+        startActivity(Intent.createChooser(shareIntent, "Share tracks to.."));*/
+        //endregion
     }
 
     private void requestPermission(String permission){
@@ -145,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 //what should be here?
                 //text message to user why need we to take access to some smartphone features?
                 Utils.logText("Please, give us the permission", context);
+                ActivityCompat.requestPermissions(this, new String[]{permission}, 0);
             } else
                 ActivityCompat.requestPermissions(this, new String[]{permission}, 0);
     }
@@ -271,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
     //region Second-level functions
 
     private String[] getArrayOfFileNames(){
-        String list = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context);
+        String list = FileMethods.readFileToString(LIST_OF_TRACKS_FILE, context);
         return list.split("\\|");
     }
 
@@ -287,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                                 tvLocationsCount.setText(String.valueOf(SensorsService.totalRoute.size()));
                                 tvSignalQuality.setText(String.valueOf(SensorsService.gpsAccuracy));
 
-                                int fileSizeB = (int)FileMethods.fileSize(BUFFER_FILENAME, context);
+                                int fileSizeB = (int)BUFFER_FILE.length();
                                 float fileSizeKB = (float)fileSizeB / 1024f;
                                 float fileSizeMB = (float)fileSizeB / 1024f / 1024f;
                                 String fileSizeStr = String.format("%.1f", fileSizeKB) + "KB";;
@@ -375,20 +446,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void updatelistViewOfTracks(){
         listOfTracks = new ArrayList<>();
+        nameToTrack = new HashMap<>();
 
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,listOfTracks);
         listViewTracks.setAdapter(adapter);
 
-        String[] arr = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context).split("\\|");
-        for (int i = arr.length-1; i > 0; i--) {
+        String[] arr = FileMethods.readFileToString(LIST_OF_TRACKS_FILE, context).split("\\|");
+        for (int i = arr.length-1; i >= 0; i--) {
             String s = arr[i];
-            if (s.length() != 0)
+            if (s.length() != 0) {
                 listOfTracks.add(s);
+                nameToTrack.put(s, FileMethods.getExternalFile(s));
+            }
         }
     }
 
     public void showTracksOnMap(View view){
-        String listoftracks = FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context);
+        String listoftracks = FileMethods.readFileToString(LIST_OF_TRACKS_FILE, context);
         String[] arr = listoftracks.split("\\|");
         String str = "";
         for (String s : arr)
@@ -402,20 +476,21 @@ public class MainActivity extends AppCompatActivity {
             serverUrl = LOCAL_SERVER_ADDRESS;
 
         for (String filename : getCheckedFilesList())
-            routeSender.sendRoute(FileMethods.readFile(filename, context), serverUrl);
+            routeSender.sendRoute(FileMethods.readFile(FileMethods.getExternalFile(filename), context), serverUrl);
     }
 
     public void shareChosenTracks(View view){
         ArrayList<Uri> list = new ArrayList<Uri>();
         for (String filename : getCheckedFilesList()) {
-            File file = new File(context.getFilesDir(), filename);
+            File file = nameToTrack.get(filename);
+            //list.add(Uri.fromFile(file));
             Uri contentUri = FileProvider.getUriForFile(MainActivity.this,
                     "ru.levabala.carsandpits_light", file);
             list.add(contentUri);
             //list.add(FileProvider.getUriForFile(context, "ru.levabala.carsandpits_light", new File(context.getFilesDir().getAbsolutePath() + "/" + filename)));
         }
 
-        Intent shareIntent = new Intent();
+        Intent shareIntent = new Intent();//_MULTIPLE);
 
         //let's grant our share intent to work with the tracks
         PackageManager packageManager = getPackageManager();
@@ -426,12 +501,13 @@ public class MainActivity extends AppCompatActivity {
                 context.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
 
-        shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-        //shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, list);
-        //shareIntent.putExtra(Intent.EXTRA_STREAM,list.get(0));
         shareIntent.setType("image/*");
+
+        shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.setAction(Intent.ACTION_SEND);
+        //shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, list);
+        Uri uri = list.get(0);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(shareIntent, "Share tracks to.."));
     }
 
@@ -468,7 +544,7 @@ public class MainActivity extends AppCompatActivity {
                         int deleteFilesCount = routerRecorder.deleteAllTracks();
                         updatelistViewOfTracks();
                         Utils.logText(String.valueOf(deleteFilesCount) + " files deleted", context);
-                        Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILENAME, context), context);
+                        Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILE, context), context);
                     }
                 },
                 new DialogInterface.OnClickListener() {

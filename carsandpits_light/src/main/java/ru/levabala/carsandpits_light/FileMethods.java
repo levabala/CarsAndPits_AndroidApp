@@ -1,6 +1,7 @@
 package ru.levabala.carsandpits_light;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import org.ubjson.io.UBJOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -24,23 +26,44 @@ import java.io.PrintWriter;
  */
 
 public class FileMethods {
-        public static void parseUBJSON(byte[] bytes) {
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(bytes);
-        UBJInputStream in = new UBJInputStream(byteIn);
-
-        try {
-
-        }
-        catch (Exception e){
-            Log.e("MY_TAG", e.toString());
-        }
+    public static File getInternalFile(String filename, Context context){
+        File ourFolder = new File(context.getFilesDir().getAbsolutePath() + "/CarsAndPits");
+        return new File(ourFolder, filename);
     }
 
-    public static void appendToFile(byte[] data, String filename, Context context){
-        FileOutputStream outputStream;
+    public static File getExternalFile(String filename){
+        File ourFolder = new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits");
+        return new File(ourFolder, filename);
+    }
+
+    public static boolean checkAndCreateOurFolders(Context context){
+        boolean result1 = true;
+        boolean result2 = true;
+
+        File folder1 = new File(context.getFilesDir().getAbsolutePath() + "/CarsAndPits");
+        File folder2 = new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits");
+        if (!folder1.exists())
+            result1 = folder1.mkdirs();
+        if (!folder2.exists())
+            result2 = folder2.mkdirs();
+
+        return result1 && result2;
+    }
+
+    public static void appendToFile(byte[] data, File file, Context context){
         try {
-            outputStream = context.openFileOutput(filename, Context.MODE_APPEND);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+        }
+        catch (Exception e){
+            Utils.logText("ERROR\n"  +e.toString(), context);
+        }
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file, true);
             outputStream.write(data);
+            outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
             Utils.logText("ERROR appendToFile\n" + e.toString(), context);
@@ -48,9 +71,9 @@ public class FileMethods {
         }
     }
 
-    public static void clearFile(String filename, Context context){
+    public static void clearFile(File file, Context context){
         try {
-            OutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = new FileOutputStream(file);
             PrintWriter writer = new PrintWriter(outputStream);
             writer.print("");
             writer.close();
@@ -61,12 +84,19 @@ public class FileMethods {
         }
     }
 
-    public static void copyFromTo(String filenameFrom, String filenameTo, Context context){
+    public static void copyFromTo(File fromFile, File toFile, Context context){
         try {
-            context.getFilesDir().mkdirs();
-
-            InputStream in = context.openFileInput(filenameFrom);
-            OutputStream out = context.openFileOutput(filenameTo, Context.MODE_PRIVATE);
+            if (!toFile.exists()) {
+                boolean res1 = toFile.getParentFile().mkdirs();
+                boolean res2 = toFile.createNewFile();
+            }
+        }
+        catch (Exception e){
+            Utils.logText("ERROR\n"  +e.toString(), context);
+        }
+        try {
+            FileInputStream in = new FileInputStream(fromFile);
+            FileOutputStream out = new FileOutputStream(toFile);
 
             // Transfer bytes from in to out
             byte[] buf = new byte[1024];
@@ -82,13 +112,12 @@ public class FileMethods {
         }
     }
 
-    public static String readFileToString(String filename, Context context) {
-
+    public static String readFileToString(File file, Context context) {
         String ret = "";
         try {
-            InputStream inputStream = context.openFileInput(filename);
+            FileInputStream inputStream = new FileInputStream(file);
 
-            if (inputStream != null) {
+            if (inputStream.available() > 0) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
@@ -109,10 +138,10 @@ public class FileMethods {
         return ret;
     }
 
-    public static byte[] readFile(String filename, Context context) {
+    public static byte[] readFile(File file, Context context) {
         byte[] bytes = new byte[0];
         try {
-            InputStream is = context.openFileInput(filename);
+            FileInputStream is = new FileInputStream(file);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] b = new byte[1024];
             int bytesRead;
@@ -127,17 +156,8 @@ public class FileMethods {
         return bytes;
     }
 
-    public static void saveBufferToFileAndClear(String targetFilename, Context context){
-        copyFromTo(MainActivity.BUFFER_FILENAME, targetFilename, context);
-        clearFile(MainActivity.BUFFER_FILENAME, context);
-    }
-
-    public static boolean isFileEmpty(String filename, int bytesMin, Context context){
-        int fileLength = (int)fileSize(filename, context);
+    public static boolean isFileEmpty(File file, int bytesMin){
+        int fileLength = (int)file.length();
         return fileLength < bytesMin;
-    }
-
-    public static long fileSize(String filename, Context context){
-        return new File(context.getFilesDir().getAbsolutePath() + "/" + filename).length();
     }
 }

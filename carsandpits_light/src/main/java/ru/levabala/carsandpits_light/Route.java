@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.ubjson.io.ByteArrayInputStream;
+import org.ubjson.io.UBJInputStream;
 import org.ubjson.io.UBJOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -22,6 +24,7 @@ import java.util.List;
 public class Route {
     public List<RoutePoint> routePoints;
     public long startTime;
+    public String owner = "unknown";
 
     public Route(List<RoutePoint> routePoints, long startTime){
         this.routePoints = routePoints;
@@ -97,6 +100,58 @@ public class Route {
         return r;
     }
 
+    public static Route parseFromUBJSON(byte[] bytes) {
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(bytes);
+        UBJInputStream in = new UBJInputStream(byteIn);
+
+        Route route = new Route();
+
+        try {
+            //total object
+            in.readObjectLength();
+
+            //header
+            in.readString();
+            in.readObjectLength();
+            in.readString(); //startime
+            long startTime = in.readInt64();
+            in.readString(); //id
+            String id = in.readString();
+
+            route.startTime = startTime;
+            route.owner = id;
+
+            //route
+            in.readString(); //header
+            int routePointsCount = in.readArrayLength();
+            for (int i = 0; i < routePointsCount; i++){
+                in.readArrayLength(); //3 here
+                float latitude = in.readFloat();
+                float longitude = in.readFloat();
+
+                int accelerationsCount = in.readArrayLength();
+                Point3dWithTime[] accelerations = new Point3dWithTime[accelerationsCount];
+                for (int i2 = 0; i2 < accelerationsCount; i2++){
+                    in.readArrayLength(); //4 here
+                    float x = in.readFloat();
+                    float y = in.readFloat();
+                    float z = in.readFloat();
+                    int deltaTime = in.readInt32();
+
+                    accelerations[i2] = new Point3dWithTime(x,y,z,deltaTime);
+                }
+
+                route.routePoints.add(new RoutePoint(new LatLng(latitude,longitude), accelerations));
+            }
+            in.readEnd(); //happy end
+        }
+        catch (Exception e){
+            Log.e("MY_TAG", e.toString());
+        }
+
+        return route;
+    }
+
     public byte[] serializeToUBJSON(Route route, Context context){
         //region route format
         /*
@@ -135,7 +190,6 @@ public class Route {
             //total object
             out.writeObjectHeader(2);
 
-
             //header
             out.writeString("header");
             out.writeObjectHeader(2);
@@ -162,7 +216,6 @@ public class Route {
                 }
             }
             out.writeEnd();
-
         }
         catch (Exception e){
             Log.e("MY_TAG", e.toString());

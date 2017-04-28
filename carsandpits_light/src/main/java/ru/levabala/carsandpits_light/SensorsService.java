@@ -61,7 +61,7 @@ public class SensorsService extends Service implements SensorEventListener {
             buffer.putLong(millis);
             startTime = millis;
             lastTime = millis;
-            FileMethods.appendToFile(buffer.array(), MainActivity.BUFFER_FILENAME, context);
+            FileMethods.appendToFile(buffer.array(), MainActivity.BUFFER_FILE, context);
 
             /*try {
                 mLastLocation = mLocationManager.getLastKnownLocation(provider);
@@ -254,7 +254,7 @@ public class SensorsService extends Service implements SensorEventListener {
         //sendMessage(totalRoute.size());
 
         byte[] data = RoutePoint.getBytes(rp);
-        FileMethods.appendToFile(data, MainActivity.BUFFER_FILENAME, this);
+        FileMethods.appendToFile(data, MainActivity.BUFFER_FILE, this);
     }
 
     public SensorsService() {
@@ -267,16 +267,17 @@ public class SensorsService extends Service implements SensorEventListener {
     }
 
     private void init(){
-        if (!FileMethods.isFileEmpty(MainActivity.BUFFER_FILENAME, 64 / 8, context)){ //long in bytes
+        if (!FileMethods.isFileEmpty(MainActivity.BUFFER_FILE, 64 / 8)){ //long in bytes
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");
             String formattedDate = df.format(c.getTime());
 
-            FileMethods.saveBufferToFileAndClear(formattedDate + ".dat", context);
+            FileMethods.copyFromTo(MainActivity.BUFFER_FILE, FileMethods.getExternalFile(formattedDate + ".dat"), context);
+            FileMethods.clearFile(MainActivity.BUFFER_FILE, context);
         }
         else {
             //logText("Clear");
-            FileMethods.clearFile(MainActivity.BUFFER_FILENAME, context);
+            FileMethods.clearFile(MainActivity.BUFFER_FILE, context);
         }
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

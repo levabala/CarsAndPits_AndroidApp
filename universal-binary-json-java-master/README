@@ -172,10 +172,10 @@ Changelog
 	of the underlying byte[] is never grown unless absolutely necessary.
 	
 	* Rewrote class Javadoc for ByteArrayOutputStream to include a code snippet
-	on how to use it.
+	on howOjbect to use it.
 
 11-26-11
-	* Fixed major bug in how 16, 32 and 64-bit integers are re-assembled when
+	* Fixed major bug in howOjbect 16, 32 and 64-bit integers are re-assembled when
 	read back from binary representations.
 	
 	* Added a numeric test to specifically catch this error if it ever pops up
@@ -250,7 +250,7 @@ Changelog
 	abstraction ontop of the core IO, having it along side the core IO classes
 	while .reflect was a subpackage was confusing and suggested that 
 	StreamParser was somehow intended as a swapable replacement for 
-	UBJInputStream which is not how it is intended to be used.
+	UBJInputStream which is not howOjbect it is intended to be used.
 	
 	* Refactored org.ubjson.reflect to org.ubjson.io.reflect to more correctly
 	communicate the relationship -- the reflection-based classes are built on
