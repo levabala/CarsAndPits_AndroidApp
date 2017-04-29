@@ -1,4 +1,4 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Services;
 
 import android.app.Service;
 import android.content.Context;
@@ -24,8 +24,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import ru.levabala.carsandpits_light.Activities.MainActivity;
+import ru.levabala.carsandpits_light.Other.FileMethods;
+import ru.levabala.carsandpits_light.Other.Point3dWithTime;
+import ru.levabala.carsandpits_light.Route.RoutePoint;
 
 public class SensorsService extends Service implements SensorEventListener {
     public static float gpsAccuracy = 0;

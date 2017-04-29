@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ru.levabala.carsandpits_light.MainActivity" tools:showIn="@layout/activity_main"
+    tools:context="ru.levabala.carsandpits_light.Activities.MainActivity" tools:showIn="@layout/activity_main"
     android:weightSum="1">
 
     <RelativeLayout

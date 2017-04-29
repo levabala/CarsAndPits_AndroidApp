@@ -1,4 +1,4 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

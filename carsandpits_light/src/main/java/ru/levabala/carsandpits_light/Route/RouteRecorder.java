@@ -1,38 +1,36 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Route;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.os.Messenger;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import ru.levabala.carsandpits_light.Other.CallbackInterface;
+import ru.levabala.carsandpits_light.Other.FileMethods;
+import ru.levabala.carsandpits_light.Activities.MainActivity;
+import ru.levabala.carsandpits_light.Services.SensorsService;
+import ru.levabala.carsandpits_light.Other.Utils;
 
 /**
  * Created by levabala on 08.04.2017.
  */
 
-public class RouterRecorder {
+public class RouteRecorder {
     public Route route;
 
     private Context context;
     private Intent intent;
     private boolean serviceIsRunning;
 
-    public RouterRecorder(Context context){
+    public RouteRecorder(Context context){
         this.context = context;
         this.intent = new Intent(context, SensorsService.class);;
     }
@@ -49,7 +47,7 @@ public class RouterRecorder {
     }
 
     public void stopRecord(final CallbackInterface callback){
-        route = new Route(new ArrayList<>(SensorsService.totalRoute), SensorsService.startTime);
+        route = new Route();//new ArrayList<>(SensorsService.totalRoute));
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS");

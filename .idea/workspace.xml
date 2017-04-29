@@ -25,19 +25,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3945f352-8403-46f3-b883-01f5d57e3f71" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/Route.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/FileMethods.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/AppCompatPreferenceActivity.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/AppCompatPreferenceActivity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/CallbackInterface.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/CallbackInterface.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/MainActivity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MapsActivity.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/MapsActivity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Point3d.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Point3d.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Point3dWithTime.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Point3dWithTime.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RoutePoint.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RoutePoint.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouteSendParams.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteSendParams.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouteSender.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteSender.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteRecorder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Services/SensorsService.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SettingsActivity.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/SettingsActivity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Utils.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Utils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/build.gradle" afterPath="$PROJECT_DIR$/carsandpits_light/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/FileMethods.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/FileMethods.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/file_paths.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/file_paths.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/release/res/values/google_maps_api.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/release/res/values/google_maps_api.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle.properties" afterPath="$PROJECT_DIR$/gradle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradlew" afterPath="$PROJECT_DIR$/gradlew" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/universal-binary-json-java-master/README" afterPath="$PROJECT_DIR$/universal-binary-json-java-master/README" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/universal-binary-json-java-master/docs/LICENSE.junit.txt" afterPath="$PROJECT_DIR$/universal-binary-json-java-master/docs/LICENSE.junit.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/HowPit.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/HowPit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitData.java" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_maps.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_maps.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/tracks_manager.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/tracks_manager.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/menu/menu_main.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/menu/menu_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_headers.xml" afterPath="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_headers.xml" />
     </list>
     <ignored path="CarsAndPits.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,14 +82,117 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java">
+      <file leaf-file-name="RouteAnalyzer.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+            <state relative-caret-position="632">
+              <caret line="142" column="1" selection-start-line="142" selection-start-column="1" selection-end-line="142" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimplePoint2d.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/SimplePoint2d.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="264">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="37" column="52" selection-start-line="37" selection-start-column="52" selection-end-line="37" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml">
+          <provider editor-type-id="android-manifest">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
+              <folding>
+                <element signature="e#1672#1701#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_visualize.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_visualize.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VisualizeActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/VisualizeActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1125#1132#0" expanded="true" />
+                <element signature="e#1180#1187#0" expanded="true" />
+                <element signature="e#1235#1242#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="396">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FourierUnitTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/test/java/ru/levabala/carsandpits_light/FourierUnitTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FFT.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/FFT.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RouteRecorder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteRecorder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -4620,7 +4736,7 @@
     <option name="modificationStamps">
       <map>
         <entry key="$PROJECT_DIR$" value="4472347953764" />
-        <entry key="C:\Users\levabala\AndroidStudioProjects\CarsAndPits" value="10366477418966" />
+        <entry key="C:\Users\levabala\AndroidStudioProjects\CarsAndPits" value="10367334483702" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -5283,18 +5399,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/drawable/ic_action_stop_white.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_v2/src/main/java/ru/levabala/carsandpits_v2/SensorsServiceController.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/debug/res/CallbackInterface.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/CallbackInterface.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/drawable/card_background.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouteSendParams.java" />
-        <option value="$PROJECT_DIR$/testing/src/main/res/layout/activity_first.xml" />
-        <option value="$PROJECT_DIR$/testing/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/toolbar.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/content_flipper.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_track_recording.xml" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_all.xml" />
@@ -5312,19 +5416,13 @@
         <option value="$PROJECT_DIR$/ubjson/build.gradle" />
         <option value="$PROJECT_DIR$/gradle.properties" />
         <option value="$PROJECT_DIR$/settings.gradle" />
-        <option value="$PROJECT_DIR$/carsandpits_light/build.gradle" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/release/res/values/google_maps_api.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/FileMethods.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/xml/file_paths.xml" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/EventType.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/EventPit.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/PitEvent.java" />
-        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitInterface.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitHow.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitData.java" />
@@ -5334,14 +5432,32 @@
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/HowPit.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/PitEvent.java" />
         <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/EventType.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteSendParams.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/SettingsActivity.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Utils.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Services/SensorsService.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/SimplePoint2d.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/FFT.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Complex.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteRecorder.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_visualize.xml" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/VisualizeActivity.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/carsandpits_light/build.gradle" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/test/java/ru/levabala/carsandpits_light/FourierUnitTest.java" />
+        <option value="$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1" />
-    <option name="y" value="1" />
-    <option name="width" value="1918" />
-    <option name="height" value="1030" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -5378,6 +5494,16 @@
               <option name="myItemId" value="CarsAndPits" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Gradle Scripts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CarsAndPits" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -5387,6 +5513,10 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="carsandpits_light" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -5401,6 +5531,24 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CarsAndPits" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="carsandpits_light" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="carsandpits_light" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -5431,16 +5579,8 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="carsandpits_light" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Event" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -5462,7 +5602,7 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="android.project.structure.last.selected" value="bujson" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="device.picker.selection" value="Nexus_One_API_16" />
+    <property name="device.picker.selection" value="Nexus_10_API_25" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/sensorsimulator-master/sensorsimulator-master/SensorRecordFromDevice" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/carsandpits_light/src/debug/res" />
     <property name="DEBUGGABLE_DEVICE" value="Nexus_6_API_25 [emulator-5554]" />
@@ -5475,8 +5615,8 @@
       <recent name="" />
     </key>
     <key name="android.template.packageName">
-      <recent name="ru.levabala.testing" />
       <recent name="ru.levabala.carsandpits_light" />
+      <recent name="ru.levabala.testing" />
       <recent name="ru.levabala.carsandpits_v2" />
       <recent name="ru.levabala.carsandpits" />
     </key>
@@ -5492,7 +5632,33 @@
       <recent name="C:\Users\levabala\AndroidStudioProjects\CarsAndPits\carsandpits_light\src\main\res\drawable" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.carsandpits_light">
+  <component name="RunManager" selected="Android JUnit.FourierUnitTest.fourierTransform_isCorrect">
+    <configuration default="false" name="FourierUnitTest.fourierTransform_isCorrect" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="ru.levabala.carsandpits_light.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="carsandpits_light" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="ru.levabala.carsandpits_light" />
+      <option name="MAIN_CLASS_NAME" value="ru.levabala.carsandpits_light.FourierUnitTest" />
+      <option name="METHOD_NAME" value="fourierTransform_isCorrect" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -5975,13 +6141,19 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method />
     </configuration>
-    <list size="5">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Android App.app" />
       <item index="1" class="java.lang.String" itemvalue="Android App.carsandpits_light" />
       <item index="2" class="java.lang.String" itemvalue="Android App.carsandpits_v2" />
       <item index="3" class="java.lang.String" itemvalue="Android App.emulator" />
       <item index="4" class="java.lang.String" itemvalue="Android App.testing" />
+      <item index="5" class="java.lang.String" itemvalue="Android JUnit.FourierUnitTest.fourierTransform_isCorrect" />
     </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Android JUnit.FourierUnitTest.fourierTransform_isCorrect" />
+      </list>
+    </recent_temporary>
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="HTML_FILE_NAME" />
@@ -6079,6 +6251,38 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 13h 58m 42s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 13h 58m 45s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 13h 59m 14s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 00m 11s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 01m 00s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 01m 07s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 01m 42s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 01m 45s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 08m 12s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="FourierUnitTest_fourierTransform_isCorrect - 2017.04.29 at 14h 09m 29s.xml">
+      <configuration name="FourierUnitTest.fourierTransform_isCorrect" configurationId="AndroidJUnit" />
+    </history-entry>
+  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -6089,29 +6293,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="1" width="1918" height="1030" extended-state="0" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.46079484" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32511738" sideWeight="0.46079484" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19131833" sideWeight="0.5069444" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32549942" sideWeight="0.53920513" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7605634" sideWeight="0.48066595" order="12" side_tool="false" content_ui="tabs" x="90" y="202" width="1400" height="973" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4864865" sideWeight="0.53061223" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.48708922" sideWeight="0.46938777" order="12" side_tool="false" content_ui="tabs" x="1911" y="21" width="1298" height="930" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33566058" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3278496" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32945284" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5107411" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2111835" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20891514" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932693" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921588" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43075117" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.38615024" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1911" y="21" width="1298" height="930" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -6121,8 +6326,25 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33566058" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -6139,150 +6361,51 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java</url>
-          <line>107</line>
+          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteRecorder.java</url>
+          <line>105</line>
           <properties />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java</url>
-          <line>510</line>
+          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/MainActivity.java</url>
+          <line>457</line>
           <properties />
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java</url>
+          <line>64</line>
+          <properties />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java</url>
+          <line>114</line>
+          <properties />
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java</url>
+          <line>111</line>
+          <properties />
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="19" />
+      <option name="time" value="36" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="carsandpits_light">
         <watch expression="routeParsed.routePoints.get(0)" />
       </configuration>
+      <configuration name="AndroidJUnit">
+        <watch expression="out[0]" />
+      </configuration>
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_general.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_data_sync.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="57" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SettingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3080">
-          <caret line="162" column="36" selection-start-line="162" selection-start-column="36" selection-end-line="162" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_all.xml" />
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_notification.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_track_recording.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_maps.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/drawable/ic_sync_black_24dp.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/drawable/ic_menu_24dp.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/pref_headers.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/menu/menu_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="36" column="74" selection-start-line="36" selection-start-column="74" selection-end-line="36" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Point3d.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RoutePoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/files_paths.xml" />
     <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/values/file_pathes.xml" />
     <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/layout/tracks_manager.xml">
@@ -6307,21 +6430,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouteSender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="25" column="55" selection-start-line="25" selection-start-column="55" selection-end-line="25" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_v2/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ubjson/build.gradle" />
     <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
@@ -6337,24 +6445,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/universal-binary-json-java-master/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -6372,53 +6466,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1254">
-          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/xml/file_paths.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/SensorsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="723">
-          <caret line="256" column="52" selection-start-line="256" selection-start-column="52" selection-end-line="256" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/FileMethods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/RouterRecorder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="94" column="40" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="185" column="8" selection-start-line="185" selection-start-column="8" selection-end-line="186" selection-end-column="59" />
           <folding />
         </state>
       </provider>
@@ -6468,25 +6519,7 @@
         <state relative-caret-position="855">
           <caret line="48" column="37" selection-start-line="48" selection-start-column="37" selection-end-line="48" selection-end-column="37" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Point3dWithTime.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/Event.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1141">
-          <caret line="54" column="0" selection-start-line="30" selection-start-column="8" selection-end-line="54" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -6496,10 +6529,10 @@
         <state relative-caret-position="176">
           <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
           <folding>
-            <element signature="e#228#229#0" expanded="true" />
-            <element signature="e#266#267#0" expanded="true" />
-            <element signature="e#312#313#0" expanded="true" />
-            <element signature="e#346#347#0" expanded="true" />
+            <element signature="e#228#229#0" expanded="false" />
+            <element signature="e#266#267#0" expanded="false" />
+            <element signature="e#312#313#0" expanded="false" />
+            <element signature="e#346#347#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -6509,15 +6542,280 @@
         <state relative-caret-position="374">
           <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Event/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+          <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/Route.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+        <state relative-caret-position="176">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding>
+            <element signature="e#648#649#0" expanded="false" />
+            <element signature="e#690#691#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RoutePoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteSender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteSendParams.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/AppCompatPreferenceActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="61" column="13" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/MapsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Activities/SettingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/CallbackInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/FileMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Point3d.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Point3dWithTime.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Services/SensorsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/Complex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2244">
+          <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
+          <folding>
+            <element signature="e#711#712#0" expanded="true" />
+            <element signature="e#752#753#0" expanded="true" />
+            <element signature="e#853#854#0" expanded="true" />
+            <element signature="e#894#895#0" expanded="true" />
+            <element signature="e#1777#1778#0" expanded="true" />
+            <element signature="e#1835#1836#0" expanded="true" />
+            <element signature="e#1941#1942#0" expanded="true" />
+            <element signature="e#1984#1985#0" expanded="true" />
+            <element signature="e#3145#3146#0" expanded="true" />
+            <element signature="e#3188#3189#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/FFT.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/test/java/ru/levabala/carsandpits_light/ExampleUnitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteRecorder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar!/org/junit/runners/ParentRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="321" column="84" selection-start-line="321" selection-start-column="84" selection-end-line="321" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_v2/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/androidTest/java/ru/levabala/carsandpits_light/ExampleInstrumentedTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/res/layout/activity_visualize.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
+          <folding>
+            <element signature="e#1672#1701#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/VisualizeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1125#1132#0" expanded="true" />
+            <element signature="e#1180#1187#0" expanded="true" />
+            <element signature="e#1235#1242#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="37" column="52" selection-start-line="37" selection-start-column="52" selection-end-line="37" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/test/java/ru/levabala/carsandpits_light/FourierUnitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Other/SimplePoint2d.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/carsandpits_light/src/main/java/ru/levabala/carsandpits_light/Route/RouteAnalyzer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="142" column="1" selection-start-line="142" selection-start-column="1" selection-end-line="142" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

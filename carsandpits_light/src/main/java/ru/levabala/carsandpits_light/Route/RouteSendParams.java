@@ -1,4 +1,4 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Route;
 
 /**
  * Created by levabala on 11.04.2017.

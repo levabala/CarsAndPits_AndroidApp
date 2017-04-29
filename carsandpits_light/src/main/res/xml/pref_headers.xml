@@ -3,7 +3,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="ru.levabala.carsandpits_light.SettingsActivity$TrackRecoringPreferenceFragment"
+        android:fragment="ru.levabala.carsandpits_light.Activities.SettingsActivity$TrackRecoringPreferenceFragment"
         android:icon="@drawable/ic_menu_24dp"
         android:title="@string/pref_track_recording"
         />

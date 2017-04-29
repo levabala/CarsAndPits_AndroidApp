@@ -1,6 +1,6 @@
 package ru.levabala.carsandpits_light.Event;
 
-import ru.levabala.carsandpits_light.Point3dWithTime;
+import ru.levabala.carsandpits_light.Other.Point3dWithTime;
 
 /**
  * Created by levabala on 28.04.2017.

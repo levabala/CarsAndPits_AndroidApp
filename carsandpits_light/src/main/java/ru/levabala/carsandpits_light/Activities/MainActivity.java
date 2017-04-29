@@ -1,4 +1,4 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -32,23 +32,14 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import org.ubjson.io.UBJOutputStream;
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,7 +49,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import ru.levabala.carsandpits_light.Event.Event;
+import ru.levabala.carsandpits_light.Other.CallbackInterface;
+import ru.levabala.carsandpits_light.Other.FileMethods;
+import ru.levabala.carsandpits_light.Other.Point3dWithTime;
+import ru.levabala.carsandpits_light.R;
+import ru.levabala.carsandpits_light.Route.RoutePoint;
+import ru.levabala.carsandpits_light.Route.RouteSender;
+import ru.levabala.carsandpits_light.Route.RouteRecorder;
+import ru.levabala.carsandpits_light.Services.SensorsService;
+import ru.levabala.carsandpits_light.Other.Utils;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> listOfTracks = new ArrayList<>();
     private Map<String, File> nameToTrack = new HashMap<>();
     private ArrayAdapter<String> adapter;
-    private RouterRecorder routerRecorder;
+    private RouteRecorder routeRecorder;
     private RouteSender routeSender;
     private Timer UIUpdateTimer;
     private Activity theActivity;
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         updatelistViewOfTracks();
 
         //let's init support classes and variables
-        routerRecorder = new RouterRecorder(context);
+        routeRecorder = new RouteRecorder(context);
         routeSender = new RouteSender(context);
         UIUpdateTimer = new Timer();
         applicationPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -154,58 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
         //now we need to check out filestree
         FileMethods.checkAndCreateOurFolders(context);
-
-        //region UBJSON testing
-        Route routeForSerializing = new Route();
-        routeForSerializing.startTime = 100500900;
-        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(100,100), new Point3dWithTime[]{
-                new Point3dWithTime(0,0,0,10),
-                new Point3dWithTime(0,4,0,9),
-                new Point3dWithTime(1,0,0,10),
-                new Point3dWithTime(0,0,0,9),
-                new Point3dWithTime(0,3,3,2),
-                new Point3dWithTime(1,1,2,8),
-                new Point3dWithTime(1,0,0,5),
-                new Point3dWithTime(0,0,8,6)
-        }));
-        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(110,103), new Point3dWithTime[]{
-                new Point3dWithTime(0,0,0,7),
-                new Point3dWithTime(0,1,0,9),
-                new Point3dWithTime(1,0,3,10),
-                new Point3dWithTime(2,0,0,9),
-                new Point3dWithTime(0,7,0,10),
-                new Point3dWithTime(1,1,2,10),
-                new Point3dWithTime(1,3,0,8),
-                new Point3dWithTime(1,0,1,10)
-        }));
-        routeForSerializing.routePoints.add(new RoutePoint(new LatLng(120,95), new Point3dWithTime[]{
-                new Point3dWithTime(0,0,1,10),
-                new Point3dWithTime(0,0,0,9),
-                new Point3dWithTime(3,0,0,10),
-                new Point3dWithTime(2,2,0,9),
-                new Point3dWithTime(0,3,3,10),
-                new Point3dWithTime(2,8,8,10),
-                new Point3dWithTime(0,2,0,10),
-                new Point3dWithTime(1,0,2,10)
-        }));
-
-        byte[] serializedRoute = routeForSerializing.serializeToUBJSON(routeForSerializing, context);
-
-        //FileMethods.appendToFile(serializedRoute, FileMethods.getExternalFile("testRouteUBJSON.txt"), context);
-        //FileMethods.appendToFile(("testRouteUBJSON.txt" + "|").getBytes(), MainActivity.LIST_OF_TRACKS_FILE, context);
-
-/*
-        Intent shareIntent = new Intent();
-        File file = FileMethods.getExternalFile("2017-04-23_07:36:18.992.dat");
-        Uri uri = FileProvider.getUriForFile(context, "ru.levabala.carsandpits_light", file);
-
-        shareIntent.setAction(Intent.ACTION_SEND);
-        //shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        shareIntent.setType("image/*");
-        startActivity(Intent.createChooser(shareIntent, "Share tracks to.."));*/
-        //endregion
     }
 
     private void requestPermission(String permission){
@@ -308,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        routerRecorder.startRecord();
+        routeRecorder.startRecord();
 
         //timer to show some track params
         startUIUpdates();
@@ -316,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveTrack(){
-        routerRecorder.stopRecord(new CallbackInterface() {
+        routeRecorder.stopRecord(new CallbackInterface() {
             @Override
             public void run() {
                 switchActivityTo(TRACKS_MANAGES_INDEX, context);
@@ -541,7 +488,7 @@ public class MainActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int deleteFilesCount = routerRecorder.deleteAllTracks();
+                        int deleteFilesCount = routeRecorder.deleteAllTracks();
                         updatelistViewOfTracks();
                         Utils.logText(String.valueOf(deleteFilesCount) + " files deleted", context);
                         Utils.logText(FileMethods.readFileToString(LIST_OF_TRACKS_FILE, context), context);

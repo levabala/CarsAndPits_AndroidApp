@@ -1,14 +1,7 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Other;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import org.ubjson.io.ByteArrayInputStream;
-import org.ubjson.io.UBJInputStream;
-import org.ubjson.io.UBJOutputStream;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -16,9 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
