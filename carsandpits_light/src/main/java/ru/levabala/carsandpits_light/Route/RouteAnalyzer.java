@@ -134,10 +134,6 @@ public class RouteAnalyzer {
         float x = (b2 - b1) / (k1 - k2);
         float y = k1 * x + b1;
 
-        if (k1 - k2 != 0) x = (b2 - b1) / (k1 - k2);
-        if (k1 - k2 != 0) y = k1 * x + b1;
-        else y = b1;
-
         return new SimplePoint2d(x,y);
     }
 }

@@ -1,4 +1,4 @@
-package ru.levabala.carsandpits_light;
+package ru.levabala.carsandpits_light.Activities;
 
 import android.graphics.Color;
 import android.provider.CalendarContract;
@@ -17,6 +17,7 @@ import java.util.List;
 import ru.levabala.carsandpits_light.Event.Event;
 import ru.levabala.carsandpits_light.Other.Complex;
 import ru.levabala.carsandpits_light.Other.Point3dWithTime;
+import ru.levabala.carsandpits_light.R;
 import ru.levabala.carsandpits_light.Route.RouteAnalyzer;
 
 public class VisualizeActivity extends AppCompatActivity {
