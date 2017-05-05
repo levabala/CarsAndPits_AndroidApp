@@ -62,7 +62,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".VisualizeActivity">
+        <activity android:name=".Activities.VisualizeActivity">
         </activity>
     </application>
 

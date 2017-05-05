@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.levabala.carsandpits_light.VisualizeActivity">
+    tools:context="ru.levabala.carsandpits_light.Activities.VisualizeActivity">
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_height="match_parent"
