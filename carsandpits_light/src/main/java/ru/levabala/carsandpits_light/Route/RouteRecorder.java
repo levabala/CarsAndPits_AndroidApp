@@ -32,7 +32,7 @@ public class RouteRecorder {
 
     public RouteRecorder(Context context){
         this.context = context;
-        this.intent = new Intent(context, SensorsService.class);;
+        this.intent = new Intent(context, SensorsService.class);
     }
 
     public void startRecord(){

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -12,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -23,20 +25,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.UUID;
 
 import ru.levabala.sensors_recorder.Other.FileMethods;
 import ru.levabala.sensors_recorder.Other.Utils;
 import ru.levabala.sensors_recorder.R;
+import ru.levabala.sensors_recorder.Recorder.Recorder;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
+    public static final long startTimeMillis = System.currentTimeMillis();
+    public static final String startTimeString = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS").format(Calendar.getInstance().getTime());
     public static String LOCAL_SERVER_ADDRESS = "http://192.168.3.6:3000";
     public static String GLOBAL_SERVER_ADDRESS = "http://62.84.116.86:3000";
     public static String DEVICE_UNIQUE_ID = "unknown";
+    public static String BUFFER_FILENAME = "buffer.dat";
+    public static File EXTERNAL_BUFFER_FILE;
+    public static File INTERNAL_BUFFER_FILE;
+    public static int FAB_ID;
 
     //views
     private View fabView;
@@ -49,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private Activity theActivity;
     private SharedPreferences applicationPrefs;
     private PowerManager.WakeLock mWakeLock;
+    private Recorder recorder;
+    private Set<String> sensorsToRecord = new ArraySet<>();
 
     private List<String> MY_PERMISSIONS = Arrays.asList(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -61,6 +77,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
+        theActivity = (Activity)context;
+
+        //constants setting up
+        EXTERNAL_BUFFER_FILE = FileMethods.getExternalFile("buffer.dat");
+        INTERNAL_BUFFER_FILE = FileMethods.getInternalFile("buffer.dat", context);
+        FileMethods.checkOutFile(EXTERNAL_BUFFER_FILE);
+        FileMethods.checkOutFile(INTERNAL_BUFFER_FILE);
+        FAB_ID = R.id.fab;
 
         //wake lock
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -85,12 +111,25 @@ public class MainActivity extends AppCompatActivity {
             applicationPrefs.edit().putString("DEVICE_UNIQUE_ID", UUID.randomUUID().toString()).apply();
         else DEVICE_UNIQUE_ID = applicationPrefs.getString("DEVICE_UNIQUE_ID", DEVICE_UNIQUE_ID);
 
+        //here we check out for list of sensors to record
+        if (!applicationPrefs.contains("SENSORS_TO_RECORD"))
+            applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", new ArraySet<>()).apply();
+        else sensorsToRecord = applicationPrefs.getStringSet("SENSORS_TO_RECORD", new ArraySet<>());
+
+        sensorsToRecord.add(String.valueOf(Sensor.TYPE_GYROSCOPE));
+        sensorsToRecord.add(String.valueOf(Sensor.TYPE_MAGNETIC_FIELD));
+        sensorsToRecord.add(String.valueOf(Sensor.TYPE_ACCELEROMETER));
+        sensorsToRecord.add(String.valueOf(Sensor.TYPE_GRAVITY));
+
         //let's request some permissions
         for (String permission : MY_PERMISSIONS)
             requestPermission(permission);
 
         //now we need to check out filestree
         FileMethods.checkAndCreateOurFolders(context);
+
+        //finally we need to initialize RECORDER
+        recorder = new Recorder(Utils.stringSetToArrayListInteger(sensorsToRecord), theActivity);
     }
 
     private void requestPermission(String permission){
@@ -111,11 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
         fabView = findViewById(R.id.fab);
         fab = (FloatingActionButton) fabView;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startRecording();
-            }
+        fab.setOnClickListener((View view) -> {
+            startRecording(view);
         });
 
         listViewSensors = (ListView)findViewById(R.id.listViewSensors);
@@ -143,7 +179,22 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void startRecording(){
+    @Override
+    public void onDestroy(){
+        recorder.onDestroy();
+        saveChanges();
+        super.onDestroy();
+    }
 
+    private void saveChanges(){
+        applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", sensorsToRecord).apply();
+    }
+
+    public void startRecording(View view){
+        recorder.start(true);
+    }
+
+    public void stopRecording(View view){
+        recorder.stop();
     }
 }

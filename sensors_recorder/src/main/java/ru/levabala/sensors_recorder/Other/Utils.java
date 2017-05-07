@@ -10,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * Created by levabala on 07.04.2017.
  */
@@ -19,9 +22,9 @@ public class Utils {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
-    public static void snackbar(String text, View fabView){
+    public static void snackbarAlert(String text, View fabView, View.OnClickListener listener){
         Snackbar.make(fabView, text, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+                .setAction("Action", listener).show();
     }
 
     public static void requestStringInDialog(String title, String message, String defaultString, EditText input,
@@ -49,5 +52,13 @@ public class Utils {
                 .setPositiveButton(android.R.string.ok, acceptCallback)
                 .create()
                 .show();
+    }
+
+    public static ArrayList<Integer> stringSetToArrayListInteger(Set<String> set){
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        for (String s : set)
+            arrayList.add(Integer.parseInt(s));
+
+        return arrayList;
     }
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
@@ -25,6 +26,26 @@ public class FileMethods {
     public static File getExternalFile(String filename){
         File ourFolder = new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits");
         return new File(ourFolder, filename);
+    }
+
+    public static File getExternalFile(String directory, String filename){
+        File ourFolder = new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits" + '/' + directory);
+        return new File(ourFolder, filename);
+    }
+
+    public static boolean checkOutFile(File file){
+        try{
+            return file.createNewFile();
+        }
+        catch (IOException e){
+            try {
+                throw e;
+            }
+            catch (Exception ee){
+                System.out.println("Completed");
+            }
+            return false;
+        }
     }
 
     public static boolean checkAndCreateOurFolders(Context context){
