@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import ru.levabala.sensors_recorder.Other.FileMethods;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private View fabView;
     private FloatingActionButton fab;
     private ListView listViewSensors;
+    private TextView tvGPS,tvGravity,tvGyroscope,tvAcceleration,tvMagneticField;
 
     //variables
     private Context context;
@@ -116,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", new ArraySet<>()).apply();
         else sensorsToRecord = applicationPrefs.getStringSet("SENSORS_TO_RECORD", new ArraySet<>());
 
+        //here we set up list of sensors to record (captain obvious)
         sensorsToRecord.add(String.valueOf(Sensor.TYPE_GYROSCOPE));
         sensorsToRecord.add(String.valueOf(Sensor.TYPE_MAGNETIC_FIELD));
         sensorsToRecord.add(String.valueOf(Sensor.TYPE_ACCELEROMETER));
@@ -130,6 +135,34 @@ public class MainActivity extends AppCompatActivity {
 
         //finally we need to initialize RECORDER
         recorder = new Recorder(Utils.stringSetToArrayListInteger(sensorsToRecord), theActivity);
+
+        //UI updates
+        UIUpdateTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                theActivity.runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                tvGPS.setText(
+                                        "GPS: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GPS.txt").length() / 1000f) + "KB"
+                                );
+                                tvAcceleration.setText(
+                                        "Accelerometer: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "ACCELEROMETER.txt").length() / 1000f) + "KB"
+                                );
+                                tvGyroscope.setText(
+                                        "Gyroscope: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GYROSCOPE.txt").length() / 1000f) + "KB"
+                                );
+                                tvMagneticField.setText(
+                                        "Magnetic field: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "MAGNETIC_FIELD.txt").length() / 1000f) + "KB"
+                                );
+                                tvGravity.setText(
+                                        "Gravity: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GRAVITY.txt").length() / 1000f) + "KB"
+                                );
+                            }
+                        });
+            }
+        },0,500);
     }
 
     private void requestPermission(String permission){
@@ -155,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listViewSensors = (ListView)findViewById(R.id.listViewSensors);
+        tvGPS = (TextView)findViewById(R.id.textViewGPSCount);
+        tvAcceleration = (TextView)findViewById(R.id.textViewAccelerationCount);
+        tvGravity = (TextView)findViewById(R.id.textViewGravityCount);
+        tvMagneticField = (TextView)findViewById(R.id.textViewMagneticFieldCount);
+        tvGyroscope = (TextView)findViewById(R.id.textViewGyroscopeCount);
     }
 
     @Override

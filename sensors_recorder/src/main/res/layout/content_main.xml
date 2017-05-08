@@ -28,4 +28,58 @@
         android:onClick="stopRecording"
         android:padding="40dp"
         android:text="Stop" />
+
+    <TextView
+        android:id="@+id/textViewAccelerationCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewMagneticFieldCount"
+        android:layout_alignStart="@+id/textViewMagneticFieldCount"
+        android:layout_below="@+id/textViewMagneticFieldCount"
+        android:text="TextView"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewMagneticFieldCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewGravityCount"
+        android:layout_alignStart="@+id/textViewGravityCount"
+        android:layout_below="@+id/textViewGravityCount"
+        android:text="TextView"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewGravityCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewGyroscopeCount"
+        android:layout_alignLeft="@+id/textViewGyroscopeCount"
+        android:layout_alignStart="@+id/textViewGyroscopeCount" />
+
+    <TextView
+        android:id="@+id/textViewGPSCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:id="@+id/textViewGyroscopeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewGPSCount"
+        android:layout_alignLeft="@+id/textViewGPSCount"
+        android:layout_alignStart="@+id/textViewGPSCount" />
+
 </RelativeLayout>

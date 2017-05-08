@@ -49,7 +49,7 @@ public class Recorder {
     private Timer recordTimer;
     private Activity activity;
     private long startTime;
-    private String startTimeString;
+    public static String startTimeString;
 
     private boolean mBound = false;
     private SensorsService mService;
@@ -84,7 +84,7 @@ public class Recorder {
 
         serviceIsRunning = true;
         startTime = System.currentTimeMillis();
-        startTimeString = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss.SSS").format(Calendar.getInstance().getTime());
+        startTimeString = new SimpleDateFormat("yyyy-MM-dd'T'HH'h'mm'm'ss").format(Calendar.getInstance().getTime());
 
         if (recordGPS)
             if (!((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)){ //yohoho
@@ -106,7 +106,7 @@ public class Recorder {
 
         FileMethods.appendToFile(
                 ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "GYROSCOPRE.txt"),
+                FileMethods.getExternalFile(startTimeString, "GYROSCOPE.txt"),
                 context
         );
 
@@ -144,7 +144,7 @@ public class Recorder {
                 if (buffer.containsKey(Sensor.TYPE_GYROSCOPE) && buffer.get(Sensor.TYPE_GYROSCOPE).size() > 0)
                     FileMethods.appendToFile(
                             DataTuple.serializeListToString(buffer.get(Sensor.TYPE_GYROSCOPE)).getBytes(),
-                            FileMethods.getExternalFile(startTimeString, "GYROSCOPRE.txt"),
+                            FileMethods.getExternalFile(startTimeString, "GYROSCOPE.txt"),
                             context
                     );
 
@@ -190,6 +190,10 @@ public class Recorder {
     public void stop(){
         Utils.logText("End", context);
         context.stopService(serviceIntent);
+        mService.stopSelf();
+        recordTimer.cancel();
+        recordTimer = new Timer();
+
         serviceIsRunning = false;
     }
 

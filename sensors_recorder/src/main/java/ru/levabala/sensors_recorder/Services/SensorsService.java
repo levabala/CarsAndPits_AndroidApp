@@ -78,7 +78,7 @@ public class SensorsService extends Service implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         int offsetFromStart = (int)(System.currentTimeMillis() - startTime);
         buffer.get(event.sensor.getType()).add(new DataTuple(
-                event.values, offsetFromStart
+                event.values.clone(), offsetFromStart
         ));
     }
 
