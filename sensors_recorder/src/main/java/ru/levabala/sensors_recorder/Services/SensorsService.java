@@ -26,10 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.levabala.sensors_recorder.Activities.MainActivity;
 import ru.levabala.sensors_recorder.Recorder.DataTuple;
-import ru.levabala.sensors_recorder.Recorder.RecordHeader;
-import ru.levabala.sensors_recorder.Recorder.SensorType;
 
 public class SensorsService extends Service implements SensorEventListener{
     public static float CRITICAL_TIME;
@@ -38,15 +35,11 @@ public class SensorsService extends Service implements SensorEventListener{
     public static final int TYPE_GPS = 999;
     public static final long startTime = System.currentTimeMillis();;
 
-    private ArrayList<SensorType> sensorsToRecord;
-    private RecordHeader header;
     private SensorManager sensorManager;
     private List<Sensor> sensorList = new ArrayList<>();
     private LocationListener locationListener;
     private LocationManager locationManager;
     private Context context = this;
-    private boolean recording = false;
-    private boolean recordGPS = false;
 
     private Map<Integer, List<DataTuple>> buffer = new HashMap<>();
 
@@ -66,8 +59,8 @@ public class SensorsService extends Service implements SensorEventListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        sensorsToRecord = intent.getParcelableArrayListExtra("sensorsToRecord");
-        recordGPS = intent.getBooleanExtra("recordGPS", false);
+        ArrayList<Integer> sensorsToRecord = intent.getIntegerArrayListExtra("sensorsToRecord");
+        boolean recordGPS = intent.getBooleanExtra("recordGPS", false);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         registerSensors(sensorsToRecord);
@@ -83,8 +76,6 @@ public class SensorsService extends Service implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (!recording) return;
-        
         int offsetFromStart = (int)(System.currentTimeMillis() - startTime);
         buffer.get(event.sensor.getType()).add(new DataTuple(
                 event.values.clone(), offsetFromStart
@@ -130,18 +121,14 @@ public class SensorsService extends Service implements SensorEventListener{
         buffer.put(TYPE_GPS, new ArrayList<>());
     }
 
-    private void saveSensorEventToFile(SensorType sensorType, DataTuple tuplya){
-
-    }
-
     private void startRecording(){
-        header = new RecordHeader(System.currentTimeMillis(), MainActivity.DEVICE_UNIQUE_ID);
-        recording = true;
+
     }
 
     private void pauseRecording(){
 
     }
+
 
     //client methods
     public HashMap<Integer, List<DataTuple>> getAndClearBuffer(){
@@ -166,8 +153,6 @@ public class SensorsService extends Service implements SensorEventListener{
         @Override
         public void onLocationChanged(Location location)
         {
-            if (!recording) return;
-
             gpsAccuracy = location.getAccuracy();
             if (isBetterLocation(location,mLastLocation)){
                 mLastLocation = location;
