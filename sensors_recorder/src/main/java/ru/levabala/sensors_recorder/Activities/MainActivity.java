@@ -29,6 +29,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ import ru.levabala.sensors_recorder.Other.FileMethods;
 import ru.levabala.sensors_recorder.Other.Utils;
 import ru.levabala.sensors_recorder.R;
 import ru.levabala.sensors_recorder.Recorder.Recorder;
+import ru.levabala.sensors_recorder.Recorder.SensorType;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
@@ -134,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
         FileMethods.checkAndCreateOurFolders(context);
 
         //finally we need to initialize RECORDER
-        recorder = new Recorder(Utils.stringSetToArrayListInteger(sensorsToRecord), theActivity);
+        recorder = new Recorder(new ArrayList<>(), theActivity);//Utils.stringSetToArrayListInteger(sensorsToRecord), theActivity);
 
         //UI updates
         UIUpdateTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                theActivity.runOnUiThread(
+                /*theActivity.runOnUiThread(
                         new Runnable() {
                             @Override
                             public void run() {
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                                         "Gravity: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GRAVITY.txt").length() / 1000f) + "KB"
                                 );
                             }
-                        });
+                        });*/
             }
         },0,500);
     }
