@@ -1,16 +1,10 @@
 <component name="libraryTable">
   <library name="support-v4-24.0.0">
-    <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/annotations.zip!/" />
-    </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/7c5551d7a1887ff22ac7fb8730eaffa2e2ba6fd6/output/jars/libs/internal_impl-24.0.0.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/7c5551d7a1887ff22ac7fb8730eaffa2e2ba6fd6/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/7c5551d7a1887ff22ac7fb8730eaffa2e2ba6fd6/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-24.0.0.aar/31f3950abf3904fbd54764257be2ddc2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-v4-24.0.0.aar/31f3950abf3904fbd54764257be2ddc2/res" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://D:/Android/android-sdk-windows/extras/android/m2repository/com/android/support/support-v4/24.0.0/support-v4-24.0.0-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

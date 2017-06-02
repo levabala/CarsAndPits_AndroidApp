@@ -13,20 +13,31 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.tv.TvInputService;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.util.SparseArray;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.levabala.sensors_recorder.Activities.MainActivity;
+import ru.levabala.sensors_recorder.Other.FileMethods;
+import ru.levabala.sensors_recorder.Other.Utils;
 import ru.levabala.sensors_recorder.Recorder.DataTuple;
+import ru.levabala.sensors_recorder.Recorder.SensorType;
 
 public class SensorsService extends Service implements SensorEventListener{
     public static float CRITICAL_TIME;
@@ -34,14 +45,16 @@ public class SensorsService extends Service implements SensorEventListener{
 
     public static final int TYPE_GPS = 999;
     public static final long startTime = System.currentTimeMillis();;
+    private String startDate = "unknown";
 
     private SensorManager sensorManager;
     private List<Sensor> sensorList = new ArrayList<>();
+    private SparseArray<FileOutputStream> sensorOutputStreams = new SparseArray<>();
     private LocationListener locationListener;
     private LocationManager locationManager;
     private Context context = this;
 
-    private Map<Integer, List<DataTuple>> buffer = new HashMap<>();
+    //private Map<Integer, List<DataTuple>> buffer = new HashMap<>();
 
 
     private final IBinder mBinder = new LocalBinder();
@@ -59,12 +72,27 @@ public class SensorsService extends Service implements SensorEventListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH'h'mm'm'ss").format(Calendar.getInstance().getTime());
         ArrayList<Integer> sensorsToRecord = intent.getIntegerArrayListExtra("sensorsToRecord");
         boolean recordGPS = intent.getBooleanExtra("recordGPS", false);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         registerSensors(sensorsToRecord);
         if (recordGPS) registerGPSRecorder();
+
+        for (int sensorId: sensorsToRecord){
+            FileMethods.appendToFile(
+                    ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
+                    FileMethods.getExternalFile(startDate, SensorType.getById(sensorId).toString() + ".txt"),
+                    context
+            );
+        }
+        if (recordGPS)
+            FileMethods.appendToFile(
+                    ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
+                    FileMethods.getExternalFile(startDate, "GPS.txt"),
+                    context
+            );
 
         return super.onStartCommand(intent,flags,startId);
     }
@@ -77,9 +105,32 @@ public class SensorsService extends Service implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
         int offsetFromStart = (int)(System.currentTimeMillis() - startTime);
-        buffer.get(event.sensor.getType()).add(new DataTuple(
-                event.values.clone(), offsetFromStart
-        ));
+        DataTuple tuplya = new DataTuple(event.values.clone(), offsetFromStart);
+        writeDataTuplyaDown(tuplya, event.sensor.getType());
+    }
+
+    @Override
+    public void onDestroy(){
+        for(int i = 0; i < sensorOutputStreams.size(); i++) {
+            int key = sensorOutputStreams.keyAt(i);
+            FileOutputStream out = sensorOutputStreams.get(key);
+            try {
+                out.close();
+            }
+            catch (IOException ex){
+                Toast.makeText(this, ex.toString() +
+                                "\nCan't close output stream",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+
+        try {
+            locationManager.removeUpdates(locationListener);
+            sensorManager.unregisterListener(this);
+        }
+        catch (Exception e){
+            logText("Some error during Destroing..\n" + e.toString());
+        }
     }
 
     private void registerSensors(ArrayList<Integer> sensorsToRecord){
@@ -94,15 +145,25 @@ public class SensorsService extends Service implements SensorEventListener{
             }
     }
 
-    private Sensor registerSensor(int type, SensorManager manager) throws Resources.NotFoundException{
+    private Sensor registerSensor(int type, SensorManager manager) throws Resources.NotFoundException {
         Sensor sensor = manager.getDefaultSensor(type);
         if (sensor != null)
             manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         else
             throw new NotFoundException("Service wasn't founded");
 
-        buffer.put(type, new ArrayList<>());
+        FileMethods.getExternalFile(startDate).mkdirs();
 
+        int sensorId = sensor.getType();
+        try {
+            sensorOutputStreams.put(
+                    sensor.getType(),
+                    new FileOutputStream(FileMethods.getExternalFile(startDate, SensorType.getById(sensorId).toString() + ".txt"))
+            );
+        }
+        catch (FileNotFoundException ex){
+            throw new NotFoundException("FileOutputStream Error");
+        }
         return sensor;
     }
 
@@ -118,7 +179,15 @@ public class SensorsService extends Service implements SensorEventListener{
             logText("requestLocationUpdating ERROR\n" + e.toString());
         }
 
-        buffer.put(TYPE_GPS, new ArrayList<>());
+        try {
+            sensorOutputStreams.put(
+                    TYPE_GPS,
+                    new FileOutputStream(FileMethods.getExternalFile(startDate, "GPS.txt"))
+            );
+        }
+        catch (FileNotFoundException ex){
+            logText("Can't register GPS FileOutputStream");
+        }
     }
 
     private void startRecording(){
@@ -128,17 +197,6 @@ public class SensorsService extends Service implements SensorEventListener{
     private void pauseRecording(){
 
     }
-
-
-    //client methods
-    public HashMap<Integer, List<DataTuple>> getAndClearBuffer(){
-        HashMap<Integer, List<DataTuple>> output = new HashMap<>(buffer);
-        for(Map.Entry<Integer, List<DataTuple>> entry : buffer.entrySet()) {
-            buffer.put(entry.getKey(), new ArrayList<>());
-        }
-        return output;
-    }
-
 
     //location listener
     private class LocationListener implements android.location.LocationListener
@@ -159,9 +217,9 @@ public class SensorsService extends Service implements SensorEventListener{
 
                 long nowTime = System.currentTimeMillis();
                 int startTimeOffset = (int)(nowTime - startTime);
-                buffer.get(TYPE_GPS).add(
-                        new DataTuple(new float[]{(float)location.getLatitude(), (float)location.getLongitude()}, startTimeOffset)
-                );
+                DataTuple gpsTuplya = new DataTuple(new float[]{(float)location.getLatitude(), (float)location.getLongitude()}, startTimeOffset);
+
+                writeDataTuplyaDown(gpsTuplya, TYPE_GPS);
             }
         }
 
@@ -240,6 +298,17 @@ public class SensorsService extends Service implements SensorEventListener{
             return provider2 == null;
         }
         return provider1.equals(provider2);
+    }
+
+    private void writeDataTuplyaDown(DataTuple tuplya, int sensorType){
+        try {
+            sensorOutputStreams.get(sensorType).write(
+                    (tuplya.toString() + '\n').getBytes()
+            );
+        }
+        catch (IOException ex){
+            Utils.logText(ex.toString(), context);
+        }
     }
 
     private void logText(String text) {

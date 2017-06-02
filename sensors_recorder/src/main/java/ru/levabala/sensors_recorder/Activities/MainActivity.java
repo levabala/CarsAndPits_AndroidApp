@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -16,19 +17,26 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -42,6 +50,7 @@ import ru.levabala.sensors_recorder.Other.FileMethods;
 import ru.levabala.sensors_recorder.Other.Utils;
 import ru.levabala.sensors_recorder.R;
 import ru.levabala.sensors_recorder.Recorder.Recorder;
+import ru.levabala.sensors_recorder.Recorder.SensorType;
 
 public class MainActivity extends AppCompatActivity {
     //some constants
@@ -58,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
     //views
     private View fabView;
     private FloatingActionButton fab;
-    private ListView listViewSensors;
+    private ListView listViewSensorsToRecord;
     private TextView tvGPS,tvGravity,tvGyroscope,tvAcceleration,tvMagneticField;
+    private ToggleButton tgButton;
 
     //variables
     private Context context;
@@ -68,7 +78,10 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences applicationPrefs;
     private PowerManager.WakeLock mWakeLock;
     private Recorder recorder;
-    private Set<String> sensorsToRecord = new ArraySet<>();
+    private ArrayList<SensorType> sensorsToRecord = new ArrayList<>();
+    private ArrayAdapter sensorsAdapter;
+
+    //TODO: we need to create "availableSensors" to hold all sensors in the memory
 
     private List<String> MY_PERMISSIONS = Arrays.asList(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -98,12 +111,13 @@ public class MainActivity extends AppCompatActivity {
         mWakeLock.acquire();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //registering all views to local variables + some listeners
-        registerViews();
-
         //let's init support classes and variables
         UIUpdateTimer = new Timer();
         applicationPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        //here we set up list of sensors to record (captain obvious)
+        sensorsToRecord.add(SensorType.ACCELEROMETER);
+        sensorsToRecord.add(SensorType.MAGNETIC_FIELD);
 
         //now a couple of configuration settings
         if (!applicationPrefs.contains("LOCAL_SERVER_ADDRESS"))
@@ -118,13 +132,15 @@ public class MainActivity extends AppCompatActivity {
         //here we check out for list of sensors to record
         if (!applicationPrefs.contains("SENSORS_TO_RECORD"))
             applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", new ArraySet<>()).apply();
-        else sensorsToRecord = applicationPrefs.getStringSet("SENSORS_TO_RECORD", new ArraySet<>());
+        else {
+            ArrayList<Integer> sensors = Utils.stringSetToArrayListInteger(
+                    applicationPrefs.getStringSet("SENSORS_TO_RECORD", new ArraySet<>()));
+            for (Integer i : sensors)
+                sensorsToRecord.add(SensorType.getById(i));
+        }
 
-        //here we set up list of sensors to record (captain obvious)
-        sensorsToRecord.add(String.valueOf(Sensor.TYPE_GYROSCOPE));
-        sensorsToRecord.add(String.valueOf(Sensor.TYPE_MAGNETIC_FIELD));
-        sensorsToRecord.add(String.valueOf(Sensor.TYPE_ACCELEROMETER));
-        sensorsToRecord.add(String.valueOf(Sensor.TYPE_GRAVITY));
+        //registering all views to local variables + some listeners
+        registerViews();
 
         //let's request some permissions
         for (String permission : MY_PERMISSIONS)
@@ -134,35 +150,20 @@ public class MainActivity extends AppCompatActivity {
         FileMethods.checkAndCreateOurFolders(context);
 
         //finally we need to initialize RECORDER
-        recorder = new Recorder(Utils.stringSetToArrayListInteger(sensorsToRecord), theActivity);
+        recorder = new Recorder(sensorsToRecord, theActivity);
 
         //UI updates
         UIUpdateTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                theActivity.runOnUiThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                tvGPS.setText(
-                                        "GPS: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GPS.txt").length() / 1000f) + "KB"
-                                );
-                                tvAcceleration.setText(
-                                        "Accelerometer: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "ACCELEROMETER.txt").length() / 1000f) + "KB"
-                                );
-                                tvGyroscope.setText(
-                                        "Gyroscope: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GYROSCOPE.txt").length() / 1000f) + "KB"
-                                );
-                                tvMagneticField.setText(
-                                        "Magnetic field: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "MAGNETIC_FIELD.txt").length() / 1000f) + "KB"
-                                );
-                                tvGravity.setText(
-                                        "Gravity: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GRAVITY.txt").length() / 1000f) + "KB"
-                                );
-                            }
-                        });
+                theActivity.runOnUiThread(() ->
+                {
+                    //"GPS: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GPS.txt").length() / 1000f) + "KB"
+                });
             }
         },0,500);
+
+        clearConfigs();
     }
 
     private void requestPermission(String permission){
@@ -184,15 +185,30 @@ public class MainActivity extends AppCompatActivity {
         fabView = findViewById(R.id.fab);
         fab = (FloatingActionButton) fabView;
         fab.setOnClickListener((View view) -> {
-            startRecording(view);
+            //startRecording(view);
         });
 
-        listViewSensors = (ListView)findViewById(R.id.listViewSensors);
-        tvGPS = (TextView)findViewById(R.id.textViewGPSCount);
-        tvAcceleration = (TextView)findViewById(R.id.textViewAccelerationCount);
-        tvGravity = (TextView)findViewById(R.id.textViewGravityCount);
-        tvMagneticField = (TextView)findViewById(R.id.textViewMagneticFieldCount);
-        tvGyroscope = (TextView)findViewById(R.id.textViewGyroscopeCount);
+        tgButton = (ToggleButton)findViewById(R.id.toggleButton);
+        tgButton.setOnClickListener((View v) -> {
+            switchRecordingState(v);
+        });
+
+        listViewSensorsToRecord = (ListView)findViewById(R.id.listViewSensorsToRecord);
+        sensorsAdapter = new SensorsAdapter(this,
+                R.layout.sensor_info, sensorsToRecord);
+        listViewSensorsToRecord.setAdapter(sensorsAdapter);
+
+
+        listViewSensorsToRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // When clicked, show a toast with the TextView text
+                SensorType sensorType = (SensorType) parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),
+                        "Clicked on Row: " + sensorType.toString(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -225,14 +241,102 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveChanges(){
-        applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", sensorsToRecord).apply();
+        Set<String> sensors = new ArraySet<>();
+        for (SensorType stype : sensorsToRecord)
+            sensors.add(String.valueOf(stype.getType()));
+        applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", sensors).apply();
+    }
+
+    private void clearConfigs(){
+        applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", new ArraySet<>()).apply();
+    }
+
+    public void switchRecordingState(View view){
+        if (((ToggleButton)view).isChecked())
+            startRecording(view);
+        else stopRecording(view);
     }
 
     public void startRecording(View view){
-        recorder.start(true);
+        recorder.start(true, context);
     }
 
     public void stopRecording(View view){
         recorder.stop();
+    }
+
+    public void showAvailableSensors(View view){
+        List<Sensor> sensors = ((SensorManager)getSystemService(Context.SENSOR_SERVICE)).getSensorList(Sensor.TYPE_ALL);
+        String str = "";
+        for (Sensor s : sensors)
+            str += s.getName() + " " + String.valueOf(s.getType()) + "\n";
+
+        Utils.logText(str, context);
+    }
+
+    private class SensorsAdapter extends ArrayAdapter<SensorType> {
+
+        private ArrayList<SensorType> sensorsList;
+
+        public SensorsAdapter(Context context, int textViewResourceId,
+                               ArrayList<SensorType> sensorsList) {
+            super(context, textViewResourceId, sensorsList);
+            this.sensorsList = new ArrayList<SensorType>();
+            this.sensorsList.addAll(sensorsList);
+        }
+
+        private class ViewHolder {
+            TextView info;
+            CheckBox name;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.sensor_info, null);
+
+                holder = new ViewHolder();
+                holder.info = (TextView) convertView.findViewById(R.id.info);
+                holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                convertView.setTag(holder);
+
+                holder.name.setOnClickListener( new View.OnClickListener() {
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v ;
+                        SensorType sensorType = (SensorType) cb.getTag();
+                        Utils.logText(
+                                "Clicked on Checkbox: " + cb.getText() +
+                                        " is " + cb.isChecked(),
+                                context);
+                        if (cb.isChecked())
+                            sensorsToRecord.add(sensorType);
+                        else sensorsToRecord.remove(sensorType);
+
+
+                        //TODO: here we need to add/remove sensorType from general list
+                    }
+                });
+            }
+            else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            if (position < sensorsList.size()) {
+                SensorType sensorType = sensorsList.get(position);
+                holder.info.setText(" (" + "info here" + ")");
+                holder.name.setText(sensorType.toString());
+                holder.name.setChecked(sensorsToRecord.contains(sensorType));
+                holder.name.setTag(sensorType);
+            }
+
+            return convertView;
+
+        }
+
     }
 }

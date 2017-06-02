@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.location.LocationManager;
+import android.media.tv.TvInputService;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.ContactsContract;
@@ -40,44 +41,39 @@ import ru.levabala.sensors_recorder.Services.SensorsService;
  */
 
 public class Recorder {
-    public Map<Integer, List<DataTuple>> data;
-    public ArrayList<Integer> sensorsList;
-
     private boolean serviceIsRunning = false;
     private Context context;
     private Intent serviceIntent;
-    private Timer recordTimer;
     private Activity activity;
+    private ArrayList<SensorType> sensorsToRecord;
+    private ArrayList<Integer> sensorsListInteger;
     private long startTime;
     public static String startTimeString;
 
     private boolean mBound = false;
     private SensorsService mService;
 
-    public Recorder(ArrayList<Integer> sensors, Activity activity){
+    public Recorder(ArrayList<SensorType> sensors, Activity activity){
         this.context = activity.getApplicationContext();
         this.activity = activity;
         this.serviceIntent = new Intent(context, SensorsService.class);
-        this.sensorsList = sensors;
-        this.recordTimer = new Timer();
+        this.sensorsToRecord = sensors;
+        this.sensorsListInteger = new ArrayList<>();
+        for (SensorType sType : sensors)
+            sensorsListInteger.add(sType.getType());
 
         context.bindService(this.serviceIntent, mConnection, Context.BIND_AUTO_CREATE);
-
-        data = new HashMap<>();
-        for (Integer type : sensors)
-            data.put(type, new ArrayList<DataTuple>());
-
-        checkPreviousBuffer();
     }
 
     public void onDestroy(){
         if (mBound) {
+            mService.stopSelf();
             context.unbindService(mConnection);
             mBound = false;
         }
     }
 
-    public void start(boolean recordGPS){
+    public void start(boolean recordGPS, Context context){
         if (serviceIsRunning) return;
 
         Utils.logText("Start", context);
@@ -100,41 +96,17 @@ public class Recorder {
                 dialog.show();
             }
 
-        serviceIntent.putIntegerArrayListExtra("sensorsToRecord", sensorsList);
+        serviceIntent.putIntegerArrayListExtra("sensorsToRecord", sensorsListInteger);
         serviceIntent.putExtra("recordGPS", recordGPS);
         context.startService(serviceIntent);
 
-        FileMethods.appendToFile(
-                ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "GYROSCOPE.txt"),
-                context
-        );
-
-        FileMethods.appendToFile(
-                ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "MAGNETIC_FIELD.txt"),
-                context
-        );
-
-        FileMethods.appendToFile(
-                ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "ACCELEROMETER.txt"),
-                context
-        );
-
-        FileMethods.appendToFile(
-                ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "GRAVITY.txt"),
-                context
-        );
-
-        FileMethods.appendToFile(
+        /*FileMethods.appendToFile(
                 ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
                 FileMethods.getExternalFile(startTimeString, "GPS.txt"),
                 context
-        );
+        );*/
 
-        recordTimer.scheduleAtFixedRate(new TimerTask(){
+        /*recordTimer.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run(){
                 if (!mBound) return;
@@ -176,7 +148,7 @@ public class Recorder {
                             context
                     );
             }
-        },0,3500);
+        },0,3500);*/
     }
 
     public void pause(){
@@ -189,10 +161,9 @@ public class Recorder {
 
     public void stop(){
         Utils.logText("End", context);
+        mService.onDestroy();
         context.stopService(serviceIntent);
         mService.stopSelf();
-        recordTimer.cancel();
-        recordTimer = new Timer();
 
         serviceIsRunning = false;
     }
@@ -247,7 +218,6 @@ public class Recorder {
                 Utils.logText("Saved as " + filename + "\nSize: "
                         + String.valueOf(file.length()) + "B", context);
 
-                data = new HashMap<>();
                 serviceIsRunning = false;
                 callback.run();
             }
