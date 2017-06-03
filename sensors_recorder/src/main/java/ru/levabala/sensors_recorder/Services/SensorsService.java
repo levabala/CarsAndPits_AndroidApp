@@ -76,10 +76,6 @@ public class SensorsService extends Service implements SensorEventListener{
         ArrayList<Integer> sensorsToRecord = intent.getIntegerArrayListExtra("sensorsToRecord");
         boolean recordGPS = intent.getBooleanExtra("recordGPS", false);
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        registerSensors(sensorsToRecord);
-        if (recordGPS) registerGPSRecorder();
-
         for (int sensorId: sensorsToRecord){
             FileMethods.appendToFile(
                     ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
@@ -93,6 +89,10 @@ public class SensorsService extends Service implements SensorEventListener{
                     FileMethods.getExternalFile(startDate, "GPS.txt"),
                     context
             );
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        registerSensors(sensorsToRecord);
+        if (recordGPS) registerGPSRecorder();
 
         return super.onStartCommand(intent,flags,startId);
     }
@@ -125,8 +125,10 @@ public class SensorsService extends Service implements SensorEventListener{
         }
 
         try {
-            locationManager.removeUpdates(locationListener);
-            sensorManager.unregisterListener(this);
+            if (locationManager != null)
+                locationManager.removeUpdates(locationListener);
+            if (sensorManager != null)
+                sensorManager.unregisterListener(this);
         }
         catch (Exception e){
             logText("Some error during Destroing..\n" + e.toString());
@@ -158,7 +160,9 @@ public class SensorsService extends Service implements SensorEventListener{
         try {
             sensorOutputStreams.put(
                     sensor.getType(),
-                    new FileOutputStream(FileMethods.getExternalFile(startDate, SensorType.getById(sensorId).toString() + ".txt"))
+                    new FileOutputStream(
+                            FileMethods.getExternalFile(startDate, SensorType.getById(sensorId).toString() + ".txt"), true
+                    )
             );
         }
         catch (FileNotFoundException ex){
@@ -173,9 +177,13 @@ public class SensorsService extends Service implements SensorEventListener{
 
         locationListener = new LocationListener(LocationManager.GPS_PROVIDER);
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            try {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            } catch (SecurityException e) {
+                logText("requestLocationUpdating ERROR\n" + e.toString());
+            }
         }
-        catch (SecurityException e){
+        catch (Exception e){
             logText("requestLocationUpdating ERROR\n" + e.toString());
         }
 

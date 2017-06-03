@@ -41,7 +41,7 @@ import ru.levabala.sensors_recorder.Services.SensorsService;
  */
 
 public class Recorder {
-    private boolean serviceIsRunning = false;
+    public boolean serviceIsRunning = false;
     private Context context;
     private Intent serviceIntent;
     private Activity activity;

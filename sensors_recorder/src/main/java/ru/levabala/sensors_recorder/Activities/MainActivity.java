@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.tv.TvInputService;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private Recorder recorder;
     private ArrayList<SensorType> sensorsToRecord = new ArrayList<>();
     private ArrayAdapter sensorsAdapter;
+    private ArrayList<SensorType> availableSensors = new ArrayList<>();
+    private boolean recordGPS = false;
 
     //TODO: we need to create "availableSensors" to hold all sensors in the memory
 
@@ -115,9 +118,20 @@ public class MainActivity extends AppCompatActivity {
         UIUpdateTimer = new Timer();
         applicationPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
+        //obtaining all sensors
+        List<Sensor> allSensors = ((SensorManager)getSystemService(Context.SENSOR_SERVICE)).getSensorList(Sensor.TYPE_ALL);
+        for (Sensor sensor : allSensors) {
+            SensorType sensorType = SensorType.getById(sensor.getType());
+            if (sensorType != SensorType.UNKNOWN)
+                availableSensors.add(sensorType);
+            else Utils.logText("Unknown sensor: " + sensor.getName() + "(" + String.valueOf(sensor.getType()) + ")", context);
+        }
+        availableSensors.add(SensorType.GPS);
+
         //here we set up list of sensors to record (captain obvious)
-        sensorsToRecord.add(SensorType.ACCELEROMETER);
-        sensorsToRecord.add(SensorType.MAGNETIC_FIELD);
+        /*sensorsToRecord.add(SensorType.ACCELEROMETER);
+        sensorsToRecord.add(SensorType.MAGNETIC_FIELD);*/
+        recorder = new Recorder(sensorsToRecord, theActivity);
 
         //now a couple of configuration settings
         if (!applicationPrefs.contains("LOCAL_SERVER_ADDRESS"))
@@ -148,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
         //now we need to check out filestree
         FileMethods.checkAndCreateOurFolders(context);
-
-        //finally we need to initialize RECORDER
-        recorder = new Recorder(sensorsToRecord, theActivity);
 
         //UI updates
         UIUpdateTimer.scheduleAtFixedRate(new TimerTask() {
@@ -195,18 +206,17 @@ public class MainActivity extends AppCompatActivity {
 
         listViewSensorsToRecord = (ListView)findViewById(R.id.listViewSensorsToRecord);
         sensorsAdapter = new SensorsAdapter(this,
-                R.layout.sensor_info, sensorsToRecord);
+                R.layout.sensor_info, availableSensors);
         listViewSensorsToRecord.setAdapter(sensorsAdapter);
 
 
         listViewSensorsToRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // When clicked, show a toast with the TextView text
                 SensorType sensorType = (SensorType) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
+                /*Toast.makeText(getApplicationContext(),
                         "Clicked on Row: " + sensorType.toString(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG).show();*/
             }
         });
     }
@@ -258,20 +268,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startRecording(View view){
-        recorder.start(true, context);
+        recorder = new Recorder(sensorsToRecord, theActivity);
+        recorder.start(recordGPS, context);
     }
 
     public void stopRecording(View view){
         recorder.stop();
-    }
-
-    public void showAvailableSensors(View view){
-        List<Sensor> sensors = ((SensorManager)getSystemService(Context.SENSOR_SERVICE)).getSensorList(Sensor.TYPE_ALL);
-        String str = "";
-        for (Sensor s : sensors)
-            str += s.getName() + " " + String.valueOf(s.getType()) + "\n";
-
-        Utils.logText(str, context);
     }
 
     private class SensorsAdapter extends ArrayAdapter<SensorType> {
@@ -309,16 +311,22 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v ;
                         SensorType sensorType = (SensorType) cb.getTag();
-                        Utils.logText(
+
+                        /*Utils.logText(
                                 "Clicked on Checkbox: " + cb.getText() +
                                         " is " + cb.isChecked(),
-                                context);
-                        if (cb.isChecked())
-                            sensorsToRecord.add(sensorType);
-                        else sensorsToRecord.remove(sensorType);
+                                context);*/
 
-
-                        //TODO: here we need to add/remove sensorType from general list
+                        if (recorder.serviceIsRunning)
+                            cb.setChecked(!cb.isChecked());
+                        else
+                            if (sensorType == SensorType.GPS)
+                                recordGPS = cb.isChecked();
+                            else
+                                if (cb.isChecked())
+                                    sensorsToRecord.add(sensorType);
+                                else sensorsToRecord.remove(sensorType);
+                        saveChanges();
                     }
                 });
             }

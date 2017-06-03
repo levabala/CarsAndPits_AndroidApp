@@ -30,6 +30,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toggleButton"
-        android:scrollbars="horizontal" />
+        android:scrollbars="vertical" />
 
 </RelativeLayout>
