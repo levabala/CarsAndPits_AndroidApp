@@ -18,14 +18,20 @@ import java.io.PrintWriter;
  */
 
 public class FileMethods {
+    public static File getInternalAppFolder(Context context){
+        return new File(context.getFilesDir().getAbsolutePath() + "/CarsAndPits");
+    }
+
+    public static File getExternalAppFolder(){
+        return new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits");
+    }
+
     public static File getInternalFile(String filename, Context context){
-        File ourFolder = new File(context.getFilesDir().getAbsolutePath() + "/CarsAndPits");
-        return new File(ourFolder, filename);
+        return new File(getInternalAppFolder(context), filename);
     }
 
     public static File getExternalFile(String filename){
-        File ourFolder = new File(Environment.getExternalStorageDirectory().toString() + "/CarsAndPits");
-        return new File(ourFolder, filename);
+        return new File(getExternalAppFolder(), filename);
     }
 
     public static File getExternalFile(String directory, String filename){

@@ -3,12 +3,15 @@ package ru.levabala.sensors_recorder.Activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.tv.TvInputService;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -274,6 +277,17 @@ public class MainActivity extends AppCompatActivity {
     public void startRecording(View view){
         recorder = new Recorder(sensorsToRecord, theActivity);
         recorder.start(recordGPS, context);
+    }
+
+    public void showDataFolder(View view){
+        Uri selectedUri = Uri.parse(FileMethods.getExternalAppFolder().getAbsolutePath());
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(selectedUri, "resource/folder");
+
+        if (intent.resolveActivityInfo(getPackageManager(), 0) != null)
+            startActivity(intent);
+        else
+            Utils.logText("No file explorer on your device!", context);
     }
 
     public void stopRecording(View view){
