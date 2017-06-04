@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<SensorType> availableSensors = new ArrayList<>();
     private boolean recordGPS = false;
 
-    //TODO: we need to create "availableSensors" to hold all sensors in the memory
-
     private List<String> MY_PERMISSIONS = Arrays.asList(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -152,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
             for (Integer i : sensors)
                 sensorsToRecord.add(SensorType.getById(i));
         }
+
+        //also need to check if we have been recording GPS last session
+        if (!applicationPrefs.contains("RECORD_GPS"))
+            applicationPrefs.edit().putBoolean("RECORD_GPS", recordGPS).apply();
+        else recordGPS = applicationPrefs.getBoolean("RECORD_GPS", true);
 
         //registering all views to local variables + some listeners
         registerViews();
@@ -255,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         for (SensorType stype : sensorsToRecord)
             sensors.add(String.valueOf(stype.getType()));
         applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", sensors).apply();
+        applicationPrefs.edit().putBoolean("RECORD_GPS", recordGPS).apply();
     }
 
     private void clearConfigs(){
@@ -338,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
                 SensorType sensorType = sensorsList.get(position);
                 holder.info.setText(" (" + "info here" + ")");
                 holder.name.setText(sensorType.toString());
-                holder.name.setChecked(sensorsToRecord.contains(sensorType));
+                holder.name.setChecked(sensorsToRecord.contains(sensorType) || (sensorType == SensorType.GPS && recordGPS));
                 holder.name.setTag(sensorType);
             }
 
