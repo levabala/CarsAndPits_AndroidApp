@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.tv.TvInputService;
@@ -45,6 +46,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -181,6 +183,18 @@ public class MainActivity extends AppCompatActivity {
         },0,500);
 
         clearConfigs();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        Locale locale = new Locale("US");
+        Locale.setDefault(locale);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
     }
 
     private void requestPermission(String permission){
@@ -366,3 +380,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+//TODO: Implement an ability of sending data to the server

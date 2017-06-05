@@ -191,7 +191,7 @@ public class SensorsService extends Service implements SensorEventListener{
         try {
             sensorOutputStreams.put(
                     TYPE_GPS,
-                    new FileOutputStream(FileMethods.getExternalFile(startDate, "GPS.txt"))
+                    new FileOutputStream(FileMethods.getExternalFile(startDate, "GPS.txt"), true)
             );
         }
         catch (FileNotFoundException ex){
