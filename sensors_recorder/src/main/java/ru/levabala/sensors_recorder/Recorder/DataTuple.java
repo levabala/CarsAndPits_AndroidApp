@@ -70,14 +70,16 @@ public class DataTuple{
     public String toString(){
         String out = String.valueOf(offsetFromStart) + '\t';
         for (float val : values)
-            out += String.valueOf(val) + '\t';
+            out += String.format("%15f ", val) + '\t';
         return out;
     }
 
     public static String serializeListToString(List<DataTuple> list){
         String out = "";
+        StringBuffer buffer = new StringBuffer();
         for (DataTuple tuplya : list)
-            out += tuplya.toString() + '\n';
-        return out;
+            buffer.append(tuplya.toString() + '\n');
+
+        return buffer.toString();
     }
 }

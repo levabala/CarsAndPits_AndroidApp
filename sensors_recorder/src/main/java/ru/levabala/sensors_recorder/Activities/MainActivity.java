@@ -121,13 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
         //obtaining all sensors
         List<Sensor> allSensors = ((SensorManager)getSystemService(Context.SENSOR_SERVICE)).getSensorList(Sensor.TYPE_ALL);
+        availableSensors.add(SensorType.GPS);
         for (Sensor sensor : allSensors) {
             SensorType sensorType = SensorType.getById(sensor.getType());
             if (sensorType != SensorType.UNKNOWN)
                 availableSensors.add(sensorType);
             else Utils.logText("Unknown sensor: " + sensor.getName() + "(" + String.valueOf(sensor.getType()) + ")", context);
         }
-        availableSensors.add(SensorType.GPS);
 
         //here we set up list of sensors to record (captain obvious)
         /*sensorsToRecord.add(SensorType.ACCELEROMETER);

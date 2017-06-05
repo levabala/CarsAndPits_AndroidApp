@@ -42,9 +42,9 @@ import ru.levabala.sensors_recorder.Recorder.SensorType;
 public class SensorsService extends Service implements SensorEventListener{
     public static float CRITICAL_TIME;
     public static float gpsAccuracy;
+    public static long startTime;
 
     public static final int TYPE_GPS = 999;
-    public static final long startTime = System.currentTimeMillis();;
     private String startDate = "unknown";
 
     private SensorManager sensorManager;
@@ -72,6 +72,7 @@ public class SensorsService extends Service implements SensorEventListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startTime = System.currentTimeMillis();
         startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH'h'mm'm'ss").format(Calendar.getInstance().getTime());
         ArrayList<Integer> sensorsToRecord = intent.getIntegerArrayListExtra("sensorsToRecord");
         boolean recordGPS = intent.getBooleanExtra("recordGPS", false);
