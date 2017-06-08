@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="play-services-cast-10.0.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-cast-10.0.1.aar/04dbb19cb7d122cfea724a02a365b127/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-cast-10.0.1.aar/04dbb19cb7d122cfea724a02a365b127/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-cast-10.0.1.aar/2956d26c5a5c29972fc664cd846443c3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-cast-10.0.1.aar/2956d26c5a5c29972fc664cd846443c3/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

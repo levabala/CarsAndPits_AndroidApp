@@ -161,9 +161,11 @@ public class Recorder {
 
     public void stop(){
         Utils.logText("End", context);
-        mService.onDestroy();
+        if (mService != null) {
+            mService.onDestroy();
+            mService.stopSelf();
+        }
         context.stopService(serviceIntent);
-        mService.stopSelf();
 
         serviceIsRunning = false;
     }

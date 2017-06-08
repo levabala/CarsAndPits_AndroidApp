@@ -23,6 +23,7 @@ import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +53,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import ru.levabala.sensors_recorder.Other.CallbackInterface;
 import ru.levabala.sensors_recorder.Other.FileMethods;
+import ru.levabala.sensors_recorder.Other.ToggleButtonClickSafe;
 import ru.levabala.sensors_recorder.Other.Utils;
 import ru.levabala.sensors_recorder.R;
 import ru.levabala.sensors_recorder.Recorder.Recorder;
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private ListView listViewSensorsToRecord;
     private TextView tvGPS,tvGravity,tvGyroscope,tvAcceleration,tvMagneticField;
-    private ToggleButton tgButton;
+    private ToggleButtonClickSafe tgButton;
 
     //variables
     private Context context;
@@ -219,9 +222,12 @@ public class MainActivity extends AppCompatActivity {
             //startRecording(view);
         });
 
-        tgButton = (ToggleButton)findViewById(R.id.toggleButton);
-        tgButton.setOnClickListener((View v) -> {
-            switchRecordingState(v);
+        tgButton = (ToggleButtonClickSafe)findViewById(R.id.toggleButton);
+        tgButton.setCallback(new CallbackInterface() {
+            @Override
+            public void run() {
+                switchRecordingState(tgButton);
+            }
         });
 
         listViewSensorsToRecord = (ListView)findViewById(R.id.listViewSensorsToRecord);

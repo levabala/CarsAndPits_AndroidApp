@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="ru.levabala.sensors_recorder.Activities.MainActivity" tools:showIn="@layout/activity_main">
 
-    <ToggleButton
+    <ru.levabala.sensors_recorder.Other.ToggleButtonClickSafe
         android:id="@+id/toggleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
