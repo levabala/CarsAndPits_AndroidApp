@@ -48,6 +48,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private PowerManager.WakeLock mWakeLock;
     private Recorder recorder;
     private ArrayList<SensorType> sensorsToRecord = new ArrayList<>();
+    private Map<SensorType, String> sensorsInfo = new HashMap<>();
     private ArrayAdapter sensorsAdapter;
     private ArrayList<SensorType> availableSensors = new ArrayList<>();
     private boolean recordGPS = false;
@@ -129,9 +131,9 @@ public class MainActivity extends AppCompatActivity {
         availableSensors.add(SensorType.GPS);
         for (Sensor sensor : allSensors) {
             SensorType sensorType = SensorType.getById(sensor.getType());
-            if (sensorType != SensorType.UNKNOWN)
+            if (sensorType != SensorType.UNKNOWN && !availableSensors.contains(sensorType))
                 availableSensors.add(sensorType);
-            else Utils.logText("Unknown sensor: " + sensor.getName() + "(" + String.valueOf(sensor.getType()) + ")", context);
+            //else Utils.logText("Unknown sensor: " + sensor.getName() + "(" + String.valueOf(sensor.getType()) + ")", context);
         }
 
         //here we set up list of sensors to record (captain obvious)
@@ -180,10 +182,24 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 theActivity.runOnUiThread(() ->
                 {
-                    //"GPS: " + String.valueOf(FileMethods.getExternalFile(Recorder.startTimeString, "GPS.txt").length() / 1000f) + "KB"
+                    for (int i = 0; i < listViewSensorsToRecord.getCount(); i++){
+                        Map<SensorType, String> sensorsInfo = recorder.getSensorsInfo();
+
+                        try {
+                            SensorsAdapter.ViewHolder holder =
+                                    (SensorsAdapter.ViewHolder) listViewSensorsToRecord.getChildAt(i).getTag();
+                            SensorType sensorType = sensorsToRecord.get(i);
+                            String info = "(" + (sensorsInfo.containsKey(sensorType) ? sensorsInfo.get(sensorType) : "") + ")";
+                            holder.info.setText(info);
+                        }
+                        catch (Exception e){
+                            int a = 0;
+                        }
+                    }
+
                 });
             }
-        },0,500);
+        },0,1500);
 
         clearConfigs();
     }
@@ -288,6 +304,10 @@ public class MainActivity extends AppCompatActivity {
         applicationPrefs.edit().putStringSet("SENSORS_TO_RECORD", new ArraySet<>()).apply();
     }
 
+    public void updateSensorsInfo(){
+
+    }
+
     public void switchRecordingState(View view){
         if (((ToggleButton)view).isChecked())
             startRecording(view);
@@ -374,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (position < sensorsList.size()) {
                 SensorType sensorType = sensorsList.get(position);
-                holder.info.setText(" (" + "info here" + ")");
+                holder.info.setText("(info'll be here)");
                 holder.name.setText(sensorType.toString());
                 holder.name.setChecked(sensorsToRecord.contains(sensorType) || (sensorType == SensorType.GPS && recordGPS));
                 holder.name.setTag(sensorType);
