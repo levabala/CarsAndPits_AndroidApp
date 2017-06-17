@@ -14,7 +14,6 @@ import ru.levabala.sensors_recorder.Activities.MainActivity;
  */
 
 public class ToggleButtonClickSafe extends ToggleButton {
-    int currentTouches = 0;
     CallbackInterface callback;
     Context context;
 
@@ -46,11 +45,11 @@ public class ToggleButtonClickSafe extends ToggleButton {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN)
-            if (event.getPointerCount() >= 3) {
+            if (event.getPointerCount() >= 2) {
                 super.performClick();
                 callback.run();
             }
-            
+
         return super.onTouchEvent(event);
     }
 }

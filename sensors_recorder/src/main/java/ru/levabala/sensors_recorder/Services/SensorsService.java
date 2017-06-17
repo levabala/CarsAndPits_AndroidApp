@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ru.levabala.sensors_recorder.Activities.MainActivity;
@@ -40,6 +41,7 @@ import ru.levabala.sensors_recorder.Recorder.DataTuple;
 import ru.levabala.sensors_recorder.Recorder.SensorType;
 
 public class SensorsService extends Service implements SensorEventListener{
+    public static Map<SensorType, String> sensorsInfo = new HashMap<>();
     public static float CRITICAL_TIME;
     public static float gpsAccuracy;
     public static long startTime;
@@ -158,6 +160,7 @@ public class SensorsService extends Service implements SensorEventListener{
         FileMethods.getExternalFile(startDate).mkdirs();
 
         int sensorId = sensor.getType();
+        sensorsInfo.put(SensorType.getById(sensorId), "");
         try {
             sensorOutputStreams.put(
                     sensor.getType(),
@@ -175,6 +178,8 @@ public class SensorsService extends Service implements SensorEventListener{
     private void registerGPSRecorder(){
         if (locationManager == null)
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        sensorsInfo.put(SensorType.GPS, "0km/h");
 
         locationListener = new LocationListener(LocationManager.GPS_PROVIDER);
         try {
@@ -210,7 +215,7 @@ public class SensorsService extends Service implements SensorEventListener{
     //location listener
     private class LocationListener implements android.location.LocationListener
     {
-        Location mLastLocation;
+        Location mLastLocation = null;
 
         public LocationListener(String provider)
         {
@@ -222,8 +227,16 @@ public class SensorsService extends Service implements SensorEventListener{
         {
             gpsAccuracy = location.getAccuracy();
             if (isBetterLocation(location,mLastLocation)){
-                mLastLocation = location;
+                if (mLastLocation == null) mLastLocation = location;
 
+                double speed = calcDistance(
+                        location.getLatitude(), mLastLocation.getLatitude(),
+                        location.getLongitude(), mLastLocation.getLongitude(),
+                        location.getAltitude(), mLastLocation.getAltitude()
+                ) / (double)(location.getTime() - mLastLocation.getTime());
+                sensorsInfo.put(SensorType.GPS, String.format(Locale.US, "%.1f", speed));
+
+                mLastLocation = location;
                 long nowTime = System.currentTimeMillis();
                 int startTimeOffset = (int)(nowTime - startTime);
                 DataTuple gpsTuplya = new DataTuple(new float[]{(float)location.getLatitude(), (float)location.getLongitude()}, startTimeOffset);
@@ -248,6 +261,26 @@ public class SensorsService extends Service implements SensorEventListener{
         public void onStatusChanged(String provider, int status, Bundle extras)
         {
 
+        }
+
+        public double calcDistance(double lat1, double lat2, double lon1,
+                                      double lon2, double el1, double el2) {
+
+            final int R = 6371; // Radius of the earth
+
+            double latDistance = Math.toRadians(lat2 - lat1);
+            double lonDistance = Math.toRadians(lon2 - lon1);
+            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            double distance = R * c * 1000; // convert to meters
+
+            double height = el1 - el2;
+
+            distance = Math.pow(distance, 2) + Math.pow(height, 2);
+
+            return Math.sqrt(distance);
         }
     }
 

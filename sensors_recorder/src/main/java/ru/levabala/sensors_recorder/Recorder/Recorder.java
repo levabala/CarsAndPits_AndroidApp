@@ -248,4 +248,9 @@ public class Recorder {
             mBound = false;
         }
     };
+
+    public Map<SensorType, String> getSensorsInfo(){
+        if (!serviceIsRunning) return new HashMap<SensorType, String>();
+        else return SensorsService.sensorsInfo;
+    }
 }

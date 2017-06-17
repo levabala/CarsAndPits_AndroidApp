@@ -7,6 +7,7 @@ import org.ubjson.io.UBJOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by levabala on 06.05.2017.
@@ -70,7 +71,7 @@ public class DataTuple{
     public String toString(){
         String out = String.valueOf(offsetFromStart) + '\t';
         for (float val : values)
-            out += String.format("%15f ", val) + '\t';
+            out += String.format(Locale.US, "%15f ", val) + '\t';
         return out;
     }
 
