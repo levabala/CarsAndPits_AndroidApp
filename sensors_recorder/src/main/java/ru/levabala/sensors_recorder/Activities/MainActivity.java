@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -184,16 +185,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for (int i = 0; i < listViewSensorsToRecord.getCount(); i++){
                         Map<SensorType, String> sensorsInfo = recorder.getSensorsInfo();
-
-                        try {
+                        View child = listViewSensorsToRecord.getChildAt(i);
+                        if (child != null) {
                             SensorsAdapter.ViewHolder holder =
-                                    (SensorsAdapter.ViewHolder) listViewSensorsToRecord.getChildAt(i).getTag();
-                            SensorType sensorType = sensorsToRecord.get(i);
+                                    (SensorsAdapter.ViewHolder) child.getTag();
+                            SensorType sensorType = (SensorType)holder.name.getTag();
                             String info = "(" + (sensorsInfo.containsKey(sensorType) ? sensorsInfo.get(sensorType) : "") + ")";
                             holder.info.setText(info);
-                        }
-                        catch (Exception e){
-                            int a = 0;
                         }
                     }
 
@@ -404,6 +402,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void log(String text){
+        Utils.log(text);
     }
 }
 

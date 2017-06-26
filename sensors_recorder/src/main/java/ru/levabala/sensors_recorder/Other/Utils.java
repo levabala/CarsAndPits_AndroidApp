@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -20,6 +21,10 @@ import java.util.Set;
 public class Utils {
     public static void logText(String text, Context context){
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
+    public static void log(String text){
+        Log.d("DEBUG", text);
     }
 
     public static void snackbarAlert(String text, View fabView, View.OnClickListener listener){

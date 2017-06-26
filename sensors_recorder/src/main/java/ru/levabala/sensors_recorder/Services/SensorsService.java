@@ -109,7 +109,9 @@ public class SensorsService extends Service implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         int offsetFromStart = (int)(System.currentTimeMillis() - startTime);
         DataTuple tuplya = new DataTuple(event.values.clone(), offsetFromStart);
-        writeDataTuplyaDown(tuplya, event.sensor.getType());
+        int type = event.sensor.getType();
+        writeDataTuplyaDown(tuplya, type);
+        sensorsInfo.put(SensorType.getById(type), "1st value: " + String.valueOf(event.values[0]));
     }
 
     @Override

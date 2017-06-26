@@ -44,12 +44,10 @@ public class ToggleButtonClickSafe extends ToggleButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN)
-            if (event.getPointerCount() >= 2) {
-                super.performClick();
-                callback.run();
-            }
-
+        if (event.getActionMasked() == MotionEvent.ACTION_POINTER_UP){
+            super.performClick();
+            callback.run();
+        }
         return super.onTouchEvent(event);
     }
 }
