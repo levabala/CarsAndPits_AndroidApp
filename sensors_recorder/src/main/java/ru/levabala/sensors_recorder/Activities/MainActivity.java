@@ -11,10 +11,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.tv.TvInputService;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -59,6 +62,7 @@ import ru.levabala.sensors_recorder.Other.CallbackInterface;
 import ru.levabala.sensors_recorder.Other.FileMethods;
 import ru.levabala.sensors_recorder.Other.ToggleButtonClickSafe;
 import ru.levabala.sensors_recorder.Other.Utils;
+import ru.levabala.sensors_recorder.Other.WakeLocker;
 import ru.levabala.sensors_recorder.R;
 import ru.levabala.sensors_recorder.Recorder.Recorder;
 import ru.levabala.sensors_recorder.Recorder.SensorType;
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         //wake lock
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
         mWakeLock.acquire();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -315,6 +319,27 @@ public class MainActivity extends AppCompatActivity {
     public void startRecording(View view){
         recorder = new Recorder(sensorsToRecord, theActivity);
         recorder.start(recordGPS, context);
+    }
+
+    public void sendFilesToServer(View view){
+        //Settings.System.putInt(getContentResolver(),Settings.System.SCREEN_BRIGHTNESS_MODE, 0);
+        //Settings.System.putInt(getContentResolver(),Settings.System.SCREEN_BRIGHTNESS, 0);
+
+        /*WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.screenBrightness = 0;
+        getWindow().setAttributes(params);*/
+
+        if(Build.VERSION.SDK_INT < 19){
+            View v = this.getWindow().getDecorView();
+            v.setSystemUiVisibility(View.GONE);
+        } else {
+            //for higher api versions.
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            decorView.setSystemUiVisibility(uiOptions);
+        }
+
+        WakeLocker.acquire(context);
     }
 
     public void showDataFolder(View view){

@@ -18,6 +18,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import java.io.File;
@@ -99,56 +100,6 @@ public class Recorder {
         serviceIntent.putIntegerArrayListExtra("sensorsToRecord", sensorsListInteger);
         serviceIntent.putExtra("recordGPS", recordGPS);
         context.startService(serviceIntent);
-
-        /*FileMethods.appendToFile(
-                ("Start time: " + String.valueOf(SensorsService.startTime) + "\nDevice id: " + MainActivity.DEVICE_UNIQUE_ID + '\n').getBytes(),
-                FileMethods.getExternalFile(startTimeString, "GPS.txt"),
-                context
-        );*/
-
-        /*recordTimer.scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                if (!mBound) return;
-
-                HashMap<Integer, List<DataTuple>> buffer = mService.getAndClearBuffer();
-
-                if (buffer.containsKey(Sensor.TYPE_GYROSCOPE) && buffer.get(Sensor.TYPE_GYROSCOPE).size() > 0)
-                    FileMethods.appendToFile(
-                            DataTuple.serializeListToString(buffer.get(Sensor.TYPE_GYROSCOPE)).getBytes(),
-                            FileMethods.getExternalFile(startTimeString, "GYROSCOPE.txt"),
-                            context
-                    );
-
-                if (buffer.containsKey(Sensor.TYPE_MAGNETIC_FIELD) && buffer.get(Sensor.TYPE_MAGNETIC_FIELD).size() > 0)
-                FileMethods.appendToFile(
-                        DataTuple.serializeListToString(buffer.get(Sensor.TYPE_MAGNETIC_FIELD)).getBytes(),
-                        FileMethods.getExternalFile(startTimeString, "MAGNETIC_FIELD.txt"),
-                        context
-                );
-
-                if (buffer.containsKey(Sensor.TYPE_ACCELEROMETER) && buffer.get(Sensor.TYPE_ACCELEROMETER).size() > 0)
-                FileMethods.appendToFile(
-                        DataTuple.serializeListToString(buffer.get(Sensor.TYPE_ACCELEROMETER)).getBytes(),
-                        FileMethods.getExternalFile(startTimeString, "ACCELEROMETER.txt"),
-                        context
-                );
-
-                if (buffer.containsKey(Sensor.TYPE_GRAVITY) && buffer.get(Sensor.TYPE_GRAVITY).size() > 0)
-                FileMethods.appendToFile(
-                        DataTuple.serializeListToString(buffer.get(Sensor.TYPE_GRAVITY)).getBytes(),
-                        FileMethods.getExternalFile(startTimeString, "GRAVITY.txt"),
-                        context
-                );
-
-                if (buffer.containsKey(SensorsService.TYPE_GPS) && buffer.get(SensorsService.TYPE_GPS).size() > 0)
-                    FileMethods.appendToFile(
-                            DataTuple.serializeListToString(buffer.get(SensorsService.TYPE_GPS)).getBytes(),
-                            FileMethods.getExternalFile(startTimeString, "GPS.txt"),
-                            context
-                    );
-            }
-        },0,3500);*/
     }
 
     public void pause(){

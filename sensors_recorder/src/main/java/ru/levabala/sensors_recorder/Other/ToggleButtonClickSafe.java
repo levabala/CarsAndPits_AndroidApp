@@ -2,8 +2,10 @@ package ru.levabala.sensors_recorder.Other;
 
 import android.app.Application;
 import android.content.Context;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -44,6 +46,7 @@ public class ToggleButtonClickSafe extends ToggleButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (event.getActionMasked() == MotionEvent.ACTION_POINTER_UP){
             super.performClick();
             callback.run();

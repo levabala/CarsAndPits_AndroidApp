@@ -80,6 +80,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_weight="1"
+            android:onClick="sendFilesToServer"
             android:text="Choose files to send" />
     </LinearLayout>
 
