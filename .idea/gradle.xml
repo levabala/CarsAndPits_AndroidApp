@@ -3,7 +3,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="D:\Android\Android Studio\gradle\gradle-2.10" />
         <option name="modules">
@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/carsandpits_light" />
             <option value="$PROJECT_DIR$/carsandpits_v2" />
+            <option value="$PROJECT_DIR$/sensors_recorder" />
             <option value="$PROJECT_DIR$/testing" />
             <option value="$PROJECT_DIR$/universal-binary-json-java-master" />
           </set>

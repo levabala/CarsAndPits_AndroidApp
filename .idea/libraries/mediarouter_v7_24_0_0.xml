@@ -1,16 +1,10 @@
 <component name="libraryTable">
   <library name="mediarouter-v7-24.0.0">
-    <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/24.0.0/annotations.zip!/" />
-    </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/jars/libs/internal_impl-24.0.0.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/50966a7aa848d7acd2e6046d463a21b7f6e54b21/output/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mediarouter-v7-24.0.0.aar/3064be72030a9613e669d318af9b30f9/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mediarouter-v7-24.0.0.aar/3064be72030a9613e669d318af9b30f9/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://D:/Android/android-sdk-windows/extras/android/m2repository/com/android/support/mediarouter-v7/24.0.0/mediarouter-v7-24.0.0-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

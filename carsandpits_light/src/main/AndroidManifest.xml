@@ -9,27 +9,26 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:debuggable="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".SensorsService"
+            android:name=".Services.SensorsService"
             android:enabled="true"
             android:exported="true" />
 
@@ -38,30 +37,33 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.levabala.carsandpits_light.MainActivity" />
+                android:value="ru.levabala.carsandpits_light.Activities.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".Activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ru.levabala.carsandpits_light.MainActivity" />
+                android:value="ru.levabala.carsandpits_light.Activities.MainActivity" />
         </activity>
+
         <provider
-            android:authorities="ru.levabala.carsandpits_light"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="ru.levabala.carsandpits_light"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".VisualizeActivity">
+        </activity>
     </application>
 
-</manifest>
-<!--ru.levabala.carsandpits_light-->
+</manifest> <!-- ru.levabala.carsandpits_light -->
