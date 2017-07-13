@@ -236,7 +236,9 @@ public class SensorsService extends Service implements SensorEventListener{
                         location.getLongitude(), mLastLocation.getLongitude(),
                         location.getAltitude(), mLastLocation.getAltitude()
                 ) / (double)(location.getTime() - mLastLocation.getTime());
-                sensorsInfo.put(SensorType.GPS, String.format(Locale.US, "%.1f", speed));
+
+                String str = String.format(Locale.US, "%.1fkm/h", speed);
+                sensorsInfo.put(SensorType.GPS, str);
 
                 mLastLocation = location;
                 long nowTime = System.currentTimeMillis();
