@@ -241,7 +241,9 @@ public class SensorsService extends Service implements SensorEventListener{
                 mLastLocation = location;
                 long nowTime = System.currentTimeMillis();
                 int startTimeOffset = (int)(nowTime - startTime);
-                DataTuple gpsTuplya = new DataTuple(new float[]{(float)location.getLatitude(), (float)location.getLongitude()}, startTimeOffset);
+                DataTuple gpsTuplya = new DataTuple(new float[]{
+                        (float)location.getLatitude(), (float)location.getLongitude(), (float)location.getAltitude()
+                }, startTimeOffset);
 
                 writeDataTuplyaDown(gpsTuplya, TYPE_GPS);
             }
