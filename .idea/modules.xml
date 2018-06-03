@@ -2,21 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\levabala\AndroidStudioProjects\CarsAndPits_AndroidApp\CarsAndPits.iml" filepath="C:\Users\levabala\AndroidStudioProjects\CarsAndPits_AndroidApp\CarsAndPits.iml" />
       <module fileurl="file://$PROJECT_DIR$/CarsAndPits_AndroidApp.iml" filepath="$PROJECT_DIR$/CarsAndPits_AndroidApp.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\app\app.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/carsandpits_light/carsandpits_light.iml" filepath="$PROJECT_DIR$/carsandpits_light/carsandpits_light.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\carsandpits_light\carsandpits_light.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\carsandpits_light\carsandpits_light.iml" />
       <module fileurl="file://$PROJECT_DIR$/carsandpits_v2/carsandpits_v2.iml" filepath="$PROJECT_DIR$/carsandpits_v2/carsandpits_v2.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\carsandpits_v2\carsandpits_v2.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\carsandpits_v2\carsandpits_v2.iml" />
       <module fileurl="file://$PROJECT_DIR$/sensors_recorder/sensors_recorder.iml" filepath="$PROJECT_DIR$/sensors_recorder/sensors_recorder.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\sensors_recorder\sensors_recorder.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\sensors_recorder\sensors_recorder.iml" />
       <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\testing\testing.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\testing\testing.iml" />
       <module fileurl="file://$PROJECT_DIR$/universal-binary-json-java-master/universal-binary-json-java-master.iml" filepath="$PROJECT_DIR$/universal-binary-json-java-master/universal-binary-json-java-master.iml" />
-      <module fileurl="file://D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\universal-binary-json-java-master\universal-binary-json-java-master.iml" filepath="D:\Documents\Projects\CarsAndPits_AndroidApp\CarsAndPits_AndroidApp\universal-binary-json-java-master\universal-binary-json-java-master.iml" />
     </modules>
   </component>
 </project>

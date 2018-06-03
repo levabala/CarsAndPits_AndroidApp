@@ -45,6 +45,7 @@ public class SensorsService extends Service implements SensorEventListener{
     public static float CRITICAL_TIME;
     public static float gpsAccuracy;
     public static long startTime;
+    public static double distance;
 
     public static final int TYPE_GPS = 999;
     private String startDate = "unknown";
@@ -75,6 +76,7 @@ public class SensorsService extends Service implements SensorEventListener{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startTime = System.currentTimeMillis();
+        distance = 0;
         startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH'h'mm'm'ss").format(Calendar.getInstance().getTime());
         ArrayList<Integer> sensorsToRecord = intent.getIntegerArrayListExtra("sensorsToRecord");
         boolean recordGPS = intent.getBooleanExtra("recordGPS", false);
@@ -231,11 +233,14 @@ public class SensorsService extends Service implements SensorEventListener{
             if (isBetterLocation(location,mLastLocation)){
                 if (mLastLocation == null) mLastLocation = location;
 
-                double speed = calcDistance(
+                double deltaDistance = calcDistance(
                         location.getLatitude(), mLastLocation.getLatitude(),
                         location.getLongitude(), mLastLocation.getLongitude(),
-                        location.getAltitude(), mLastLocation.getAltitude()
-                ) / (double)(location.getTime() - mLastLocation.getTime());
+                        location.getAltitude(), mLastLocation.getAltitude()) / 1000f;
+                double deltaTime = (double)(location.getTime() - mLastLocation.getTime());
+                double speed = deltaDistance / deltaTime;
+
+                distance += deltaDistance;
 
                 String str = String.format(Locale.US, "%.1fkm/h", speed);
                 sensorsInfo.put(SensorType.GPS, str);
@@ -244,7 +249,7 @@ public class SensorsService extends Service implements SensorEventListener{
                 long nowTime = System.currentTimeMillis();
                 int startTimeOffset = (int)(nowTime - startTime);
                 DataTuple gpsTuplya = new DataTuple(new float[]{
-                        (float)location.getLatitude(), (float)location.getLongitude(), (float)location.getAltitude()
+                        (float)location.getLatitude(), (float)location.getLongitude(), (float)location.getAltitude(), (float)distance, (float)speed
                 }, startTimeOffset);
 
                 writeDataTuplyaDown(gpsTuplya, TYPE_GPS);
